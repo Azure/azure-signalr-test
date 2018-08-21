@@ -52,17 +52,31 @@ namespace Microsoft.Azure.SignalR.Test.Server
             services.AddSignalR()
                 .AddAzureSignalR(options =>
                 {
-                    options.ClaimsProvider = context => new[]
+                    options.ClaimsProvider = context =>
                     {
-                    new Claim(ClaimTypes.NameIdentifier, context.Request.Query["username"])
-                };
+                        if (context.Request.Query["username"].Count != 0)
+                        {
+                            return new[]
+                            {
+                                new Claim(ClaimTypes.NameIdentifier, context.Request.Query["username"])
+                            };
+                        }
+
+                        return new Claim[] { };
+                    };
                 });
+            services.AddCors();
         }
 
         public void Configure(IApplicationBuilder app)
         {
             app.UseAuthentication();
             app.UseMvc();
+            app.UseCors(builder =>
+                builder.WithOrigins("http://localhost")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
             app.UseFileServer();
             app.UseAzureSignalR(routes =>
             {
