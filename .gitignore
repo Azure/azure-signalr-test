@@ -61,7 +61,6 @@ typings/
 .next
 
 # .net
-.sln
 bin/
 obj/
 .vs/
