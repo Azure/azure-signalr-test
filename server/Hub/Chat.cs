@@ -56,5 +56,10 @@ namespace Microsoft.Azure.SignalR.Test.Server
         {
             Clients.Users(userIds).SendAsync("echo", name, message);
         }
+
+        public void GetConnectionId()
+        {
+            Clients.Client(Context.ConnectionId).SendAsync("echo", Context.ConnectionId);
+        }
     }
 }
