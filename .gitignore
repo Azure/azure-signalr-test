@@ -65,3 +65,6 @@ typings/
 bin/
 obj/
 .vs/
+
+# webstorm
+.idea/

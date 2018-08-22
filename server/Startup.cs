@@ -81,6 +81,8 @@ namespace Microsoft.Azure.SignalR.Test.Server
             app.UseAzureSignalR(routes =>
             {
                 routes.MapHub<Chat>("/chat");
+                routes.MapHub<ChatJwt>("/chatjwt");
+                routes.MapHub<ChatCookie>("/chatcookie");
             });
         }
     }
