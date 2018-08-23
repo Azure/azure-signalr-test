@@ -38,6 +38,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
 # Copy Server and Client
 RUN mkdir server client
 ENV Azure__SignalR__ConnectionString ""
+ENV DELAY "500"
 ENV PORT "80"
 COPY --from=build-env /app/out server/
 COPY client client/
