@@ -1,3 +1,21 @@
+# Azure SignalR Test
+The project to provide automation E2E test on SignalR sdk and service runtime.
+
+## How to build and run
+First check the SDK version needed. Each SDKVerison will build a separate docker image and the tag is the sdk version.
+```bash
+# build-image.sh
+declare -a SDKVersion=("1.0.0-preview1-10009" "1.0.0-preview1-10011")
+```
+```bash
+./build-image.sh
+```
+
+Then you can run the test with Azure SignalR Service
+```bash
+docker run -e Azure__SignalR__ConnectionString="<your connection string>"  signalr-test:<sdk version>
+```
+
 
 # Contributing
 
