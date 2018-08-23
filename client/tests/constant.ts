@@ -11,5 +11,5 @@ export class Constant {
   public static readonly getConnectionId = 'getconnectionid';
   public static readonly port = process.env.PORT || 5000;
   public static url = `http://localhost:${Constant.port}/chat`;
-  public static readonly delay = 500;
+  public static readonly delay = Number(process.env.DELAY || 500);
 }
