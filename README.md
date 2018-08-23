@@ -16,6 +16,11 @@ Then you can run the test with Azure SignalR Service
 docker run -e Azure__SignalR__ConnectionString="<your connection string>"  signalr-test:<sdk version>
 ```
 
+## Test Coverage
+* Connect / Echo / Broadcast
+* Group join / leave
+* Send Group / Groups / Group Except
+* Send User / Users
 
 # Contributing
 
