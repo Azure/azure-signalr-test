@@ -21,6 +21,8 @@
   "dependencies": {
     "@aspnet/signalr": "^1.0.2",
     "@types/jest": "^23.3.1",
+    "@types/request": "^2.47.1",
+    "request": "^2.88.0",
     "jest": "^23.5.0",
     "npm": "^6.4.0",
     "ts-jest": "^23.1.3",
