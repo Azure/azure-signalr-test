@@ -1,7 +1,6 @@
 import {delay, getConnections, startConnections} from "./utils";
 import {Constant} from "./constant";
 
-const url = 'http://localhost:5000/chat';
 const testMessage = 'Test Message';
 
 test('connect to server', async () => {

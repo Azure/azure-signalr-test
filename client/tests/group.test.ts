@@ -31,7 +31,7 @@ test('join and leave group', async () => {
   await connections[0].invoke(Constant.sendGroup, 'connection0', groupName, testMessage);
   await delay(Constant.delay);
   expect(callback[1]).not.toHaveBeenCalledWith('connection0', testMessage);
-});
+}, Constant.timeout);
 
 test('send group / groups / group except', async () => {
   let connectionId1 : string;
@@ -73,8 +73,9 @@ test('send group / groups / group except', async () => {
 
   // Connection1 send to Group1 except connection1
   await connections[1].invoke(Constant.getConnectionId);
+  await delay(Constant.delay);
   await connections[1].invoke(Constant.sendGroupExcept, 'connection1', groupName, [connectionId1], testMessage);
   await delay(Constant.delay);
   expect(callback[0]).toHaveBeenCalledWith('connection1', testMessage);
   expect(callback[1]).not.toHaveBeenCalledWith('connection1', testMessage);
-});
+}, Constant.timeout);
