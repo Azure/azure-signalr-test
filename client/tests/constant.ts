@@ -10,6 +10,7 @@ export class Constant {
   public static readonly sendUsers = 'sendusers';
   public static readonly getConnectionId = 'getconnectionid';
   public static readonly port = process.env.PORT || 5000;
-  public static url = `http://localhost:${Constant.port}/chat`;
-  public static readonly delay = Number(process.env.DELAY || 500);
+  public static readonly url = `http://localhost:${Constant.port}/chat`;
+  public static readonly delay = Number(process.env.DELAY || 200);
+  public static readonly timeout = 60000 // Timeout for each test
 }
