@@ -9,6 +9,7 @@ export class Constant {
   public static readonly sendUser = 'senduser';
   public static readonly sendUsers = 'sendusers';
   public static readonly getConnectionId = 'getconnectionid';
-  public static readonly url = 'http://localhost:5000/chat';
+  public static readonly port = process.env.PORT || 5000;
+  public static url = `http://localhost:${Constant.port}/chat`;
   public static readonly delay = 500;
 }

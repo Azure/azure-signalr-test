@@ -3,10 +3,12 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <UserSecretsId>testserver</UserSecretsId>
     <RootNamespace>Microsoft.Azure.SignalR.Test.Server</RootNamespace>
+    <PackageVersion>1.0.0-preview1-10011</PackageVersion>
+    <PackageVersion Condition=" '$(SDKVersion)' != '' ">$(SDKVersion)</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
-    <PackageReference Include="Microsoft.Azure.SignalR" Version="1.0.0-*" />
+    <PackageReference Include="Microsoft.Azure.SignalR" Version="$(PackageVersion)" />
   </ItemGroup>
 </Project>
