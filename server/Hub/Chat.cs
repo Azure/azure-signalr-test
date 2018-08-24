@@ -19,6 +19,16 @@ namespace Microsoft.Azure.SignalR.Test.Server
             Clients.Client(Context.ConnectionId).SendAsync("echo", name, message);
         }
 
+        public void SendConnections(string name, IReadOnlyList<string> connections, string message)
+        {
+            Clients.Clients(connections).SendAsync("echo", name, message);
+        }
+
+        public void SendOthers(string name, string message)
+        {
+            Clients.AllExcept(Context.ConnectionId).SendAsync("echo", name, message);
+        }
+
         public async void JoinGroup(string name, string groupName)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
@@ -45,6 +55,11 @@ namespace Microsoft.Azure.SignalR.Test.Server
         public void SendGroupExcept(string name, string groupName, IReadOnlyList<string> connectionIdExcept, string message)
         {
             Clients.GroupExcept(groupName, connectionIdExcept).SendAsync("echo", name, message);
+        }
+
+        public void SendOthersInGroup(string name, string groupName, string message)
+        {
+            Clients.OthersInGroup(groupName).SendAsync("echo", name, message);
         }
 
         public void SendUser(string name, string userId, string message)

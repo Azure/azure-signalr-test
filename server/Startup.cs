@@ -83,6 +83,8 @@ namespace Microsoft.Azure.SignalR.Test.Server
                 routes.MapHub<Chat>("/chat");
                 routes.MapHub<ChatJwt>("/chatjwt");
                 routes.MapHub<ChatCookie>("/chatcookie");
+                routes.MapHub<GenericChat<IChat>>("/genericchat");
+                routes.MapHub<LongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongName>("/longnamechat");
             });
         }
     }

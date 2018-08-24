@@ -79,3 +79,38 @@ test('send group / groups / group except', async () => {
   expect(callback[0]).toHaveBeenCalledWith('connection1', testMessage);
   expect(callback[1]).not.toHaveBeenCalledWith('connection1', testMessage);
 }, Constant.timeout);
+
+test('send others in group', async () => {
+  let connectionId0 : string;
+  const callback = [jest.fn(), jest.fn(), jest.fn()];
+  const groupName = 'Test Group';
+  const testMessage = 'Test Message';
+
+  let connections = getConnections(3);
+  connections[0].on(Constant.echo, callback[0]);
+  connections[0].on(Constant.getConnectionId, id => connectionId0 = id);
+  connections[1].on(Constant.echo, callback[1]);
+  connections[2].on(Constant.echo, callback[2]);
+  await startConnections(connections);
+
+  await connections[0].invoke(Constant.joinGroup, 'connection0', groupName);
+  await connections[1].invoke(Constant.joinGroup, 'connection1', groupName);
+  await connections[2].invoke(Constant.joinGroup, 'connection2', groupName);
+
+  await delay(Constant.delay);
+  await connections[0].invoke(Constant.getConnectionId);
+  await delay(Constant.delay);
+
+  await connections[0].invoke(Constant.sendGroupExcept, 'connection0', groupName, [connectionId0], testMessage);
+  await delay(Constant.delay*3);
+
+  expect(callback[1]).toHaveBeenCalledTimes(2);
+
+  await connections[0].invoke(Constant.sendOthersInGroup, 'connection0', groupName, testMessage);
+  await delay(Constant.delay*3);
+
+  expect(callback[0]).not.toHaveBeenCalledWith('connection0', testMessage);
+  expect(callback[1]).toHaveBeenCalledWith('connection0', testMessage);
+  expect(callback[2]).toHaveBeenCalledWith('connection0', testMessage);
+  expect(callback[1]).toHaveBeenCalledTimes(3);
+}, Constant.timeout);

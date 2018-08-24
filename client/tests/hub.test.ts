@@ -1,0 +1,32 @@
+import {getConnections, startConnections} from "./utils";
+import {Constant} from "./constant";
+
+const testMessage = 'Test Message';
+
+test('generic hub', async () => {
+  const connections = getConnections(1, `${Constant.host}/genericchat`);
+  const connectionName = 'connection';
+
+  const echoCallback = jest.fn();
+  connections[0].on('echo', echoCallback);
+
+  await startConnections(connections);
+
+  await connections[0].invoke('echo', connectionName, testMessage);
+
+  expect(echoCallback).toBeCalledWith(connectionName, testMessage);
+});
+
+test('long name hub with length 128', async () => {
+  const connections = getConnections(1, `${Constant.host}/longnamechat`);
+  const connectionName = 'connection';
+
+  const echoCallback = jest.fn();
+  connections[0].on('echo', echoCallback);
+
+  await startConnections(connections);
+
+  await connections[0].invoke('echo', connectionName, testMessage);
+
+  expect(echoCallback).toBeCalledWith(connectionName, testMessage);
+});
