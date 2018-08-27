@@ -17,10 +17,12 @@ docker run -e Azure__SignalR__ConnectionString="<your connection string>"  signa
 ```
 
 ## Test Coverage
-* Connect / Echo / Broadcast
+* Connect / Echo / Broadcast / AllExcept
 * Group join / leave
-* Send Group / Groups / Group Except
+* Send Group / Groups / Group Except / OthersInGroup
 * Send User / Users
+* JWT Auth
+* Generic hub / 128 character length hub name support
 
 # Contributing
 
