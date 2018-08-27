@@ -4,7 +4,6 @@ import * as request from "request-promise";
 
 const testMessage = 'Test Message';
 
-
 test('auth with jwt', async () => {
   let usernameFactory = function(_) : string {return 'jwtUser'};
   let username = usernameFactory(0);

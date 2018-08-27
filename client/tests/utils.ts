@@ -1,7 +1,6 @@
 import {HubConnection} from "@aspnet/signalr";
 import * as signalR from "@aspnet/signalr";
 import {Constant} from "./constant";
-import {} from "request";
 
 async function delay(milliseconds: number) {
   return new Promise<void>(resolve => {
