@@ -6,7 +6,8 @@
     "lib": [ "ES2015" ]
   },
   "include": [
-    "tests/**/*"
+    "tests/**/*",
+    "node_modules/typescript/lib/typescriptServices.d.ts"
   ],
   "exclude": [
     "node_modules"
