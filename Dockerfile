@@ -15,6 +15,11 @@ RUN dotnet publish -c Release -o out
 # build runtime image
 FROM signalr-test-base
 
+# Copy Server and Client
+RUN mkdir server client
+ENV Azure__SignalR__ConnectionString ""
+ENV DELAY "500"
+ENV PORT "80"
 COPY --from=build-env /app/out server/
 COPY client client/
 RUN cd client && npm install
