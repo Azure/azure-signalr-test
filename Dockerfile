@@ -6,6 +6,7 @@ ARG SDKVersion
 # copy csproj and restore as distinct layers
 RUN mkdir server && cd server/
 COPY server/*.csproj ./
+COPY server/NuGet.config ./
 RUN dotnet restore
 
 # copy server and build
