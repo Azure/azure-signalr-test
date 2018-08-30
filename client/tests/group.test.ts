@@ -101,9 +101,6 @@ test('send others in group', async () => {
   await connections[0].invoke(Constant.getConnectionId);
   await delay(Constant.delay);
 
-  await connections[0].invoke(Constant.sendGroupExcept, 'connection0', groupName, [connectionId0], testMessage);
-  await delay(Constant.delay*3);
-
   expect(callback[1]).toHaveBeenCalledTimes(2);
 
   await connections[0].invoke(Constant.sendOthersInGroup, 'connection0', groupName, testMessage);
