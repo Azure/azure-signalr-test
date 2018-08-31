@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting.Internal;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Microsoft.Azure.SignalR.Test.Server
@@ -75,6 +71,16 @@ namespace Microsoft.Azure.SignalR.Test.Server
         public void GetConnectionId()
         {
             Clients.Client(Context.ConnectionId).SendAsync("getConnectionId", Context.ConnectionId);
+        }
+
+        public string GetPath()
+        {
+            return Context.GetHttpContext().Request.Path.Value;
+        }
+
+        public string GetQueryString()
+        {
+            return Context.GetHttpContext().Request.QueryString.Value;
         }
     }
 }

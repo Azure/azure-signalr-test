@@ -2,6 +2,11 @@ import {HubConnection} from "@aspnet/signalr";
 import * as signalR from "@aspnet/signalr";
 import {Constant} from "./constant";
 
+function appendQueryParameter(url: string, name: string, value: string) {
+  var separator = url.indexOf('?') === -1 ? '?' : '&';
+  return  `${url}${separator}${name}=${value}`
+}
+
 async function delay(milliseconds: number) {
   return new Promise<void>(resolve => {
     setTimeout(resolve, milliseconds);
@@ -18,7 +23,7 @@ function getConnections(count : number, url = Constant.url, usernameFactory? : (
       username = `user${i}`;
     }
     connections[i] = new signalR.HubConnectionBuilder()
-      .withUrl(`${url}?username=${username}`, {
+      .withUrl(appendQueryParameter(url, 'username', username), {
         accessTokenFactory: () => accessToken
       })
       .build();
