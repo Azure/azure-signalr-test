@@ -10,7 +10,7 @@ test('broadcast serverless', async () => {
 
   const callback = jest.fn();
   for (let i = 0; i < connections.length; i++) {
-    connections[i].on(Constant.broadcast, callback);
+    connections[i].on(Constant.echo, callback);
   }
 
   await startConnections(connections);
@@ -33,7 +33,7 @@ test('broadcast serverless', async () => {
       'Authorization': 'Bearer ' + token
     },
     body: {
-      target: Constant.broadcast,
+      target: Constant.echo,
       arguments: [ 'hub-broadcast', testMessage ]
     },
     json: true
