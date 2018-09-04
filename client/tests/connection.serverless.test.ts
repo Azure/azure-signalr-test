@@ -2,17 +2,13 @@ import {delay, getConnections, startConnections} from "./utils";
 import {Constant} from "./constant";
 import {ConnectionString} from "./connectionString";
 import * as request from "request-promise";
-import * as nJwt from "njwt";
 
 const testMessage = 'Test Message';
 
 test('broadcast serverless', async () => {
-  let clientToken = nJwt.create({
-    "aud": ConnectionString.clientUrl,
-    "name": "user1",
-    "exp": new Date().valueOf() + (24*60*60*1000)
-  },ConnectionString.key,"HS256")
-  let connections = getConnections(1, ConnectionString.clientUrl, (n)=>'user1' + n, clientToken);
+  const hub = 'serverless';
+  
+  let connections = getConnections(1, ConnectionString.getClientUrl(hub), null, ConnectionString.getToken(ConnectionString.getClientUrl(hub)));
 
   const callback = jest.fn();
   for (let i = 0; i < connections.length; i++) {
@@ -21,16 +17,11 @@ test('broadcast serverless', async () => {
 
   await startConnections(connections);
   
-  let serverToken = nJwt.create({
-    "aud": ConnectionString.serverUrl,
-    "exp": new Date().valueOf() + (24*60*60*1000)
-  },ConnectionString.key,"HS256").compact();
-
   await request({
     method: 'POST',
-    uri: ConnectionString.serverUrl,
+    uri: ConnectionString.getServerUrl(hub),
     headers: {
-      'Authorization': 'Bearer ' + serverToken
+      'Authorization': 'Bearer ' + ConnectionString.getToken(ConnectionString.getServerUrl(hub))
     },
     body: {
       target: Constant.echo,
