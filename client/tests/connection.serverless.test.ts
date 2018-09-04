@@ -7,12 +7,12 @@ import * as nJwt from "njwt";
 const testMessage = 'Test Message';
 
 test('broadcast serverless', async () => {
-  let token = nJwt.create({
+  let clientToken = nJwt.create({
     "aud": ConnectionString.clientUrl,
     "name": "user1",
     "exp": new Date().valueOf() + (24*60*60*1000)
   },ConnectionString.key,"HS256")
-  let connections = getConnections(1, ConnectionString.clientUrl, (n)=>'user1' + n, token);
+  let connections = getConnections(1, ConnectionString.clientUrl, (n)=>'user1' + n, clientToken);
 
   const callback = jest.fn();
   for (let i = 0; i < connections.length; i++) {
@@ -20,13 +20,8 @@ test('broadcast serverless', async () => {
   }
 
   await startConnections(connections);
-
-  var claims = {
-    "aud": ConnectionString.serverUrl,
-    "exp": new Date().valueOf() + (24*60*60*1000)
-  };
   
-  token = nJwt.create({
+  let serverToken = nJwt.create({
     "aud": ConnectionString.serverUrl,
     "exp": new Date().valueOf() + (24*60*60*1000)
   },ConnectionString.key,"HS256").compact();
@@ -35,7 +30,7 @@ test('broadcast serverless', async () => {
     method: 'POST',
     uri: ConnectionString.serverUrl,
     headers: {
-      'Authorization': 'Bearer ' + token
+      'Authorization': 'Bearer ' + serverToken
     },
     body: {
       target: Constant.echo,

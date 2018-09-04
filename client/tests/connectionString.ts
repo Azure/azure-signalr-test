@@ -6,8 +6,6 @@ function getConnectionString() {
   pairs.forEach(pair => {
     let index = pair.indexOf('=');
     if (index > 0){
-      console.log(pair.substring(0, index));
-      console.log(pair.substring(index+1));
       result[pair.substring(0, index)] = pair.substring(index+1);
     }
   });
