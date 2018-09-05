@@ -21,3 +21,8 @@ if (semver.gte(sdkVerion, '1.0.0-preview1-10197')) {
     expect(queryString).toContain("&customName=customValue&");
   });
 }
+else {
+  test('Fake test', async () => {
+    expect(1).toBe(1);
+  }); 
+}
