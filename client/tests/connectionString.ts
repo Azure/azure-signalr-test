@@ -20,13 +20,17 @@ export class ConnectionString {
   public static readonly getClientUrl = function(hub:string) {
     return `${ConnectionString.endpoint}:5001/client/?hub=${hub}`;
   }
-  public static readonly getServerUrl = function(hub:string){
+  public static readonly getPreviewRestUrl = function(hub:string){
     return  `${ConnectionString.endpoint}:5002/api/v1-preview/hub/${hub}`;
   }
-  public static readonly getToken = function(aud:string){
-    return nJwt.create({
+  public static readonly getToken = function(aud:string,userId?:string){
+    let claim = {
       "aud": aud,
       "exp": new Date().valueOf() + (24*60*60*1000)
-    },ConnectionString.key,"HS256").compact()
+    };
+    if (userId) {
+      claim['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] = userId;
+    }
+    return nJwt.create(claim,ConnectionString.key,"HS256").compact()
   }
 }
