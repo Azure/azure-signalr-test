@@ -15,5 +15,5 @@ export class Constant {
   public static readonly host = `http://localhost:${Constant.port}`;
   public static readonly url = `${Constant.host}/chat`;
   public static readonly delay = Number(process.env.DELAY || 200);
-  public static readonly timeout = 60000 // Timeout for each test
+  public static readonly timeout = Number(process.env.TIMEOUT || 60000); // Timeout for each test
 }

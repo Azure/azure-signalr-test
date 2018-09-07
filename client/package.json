@@ -5,6 +5,7 @@
     "test": "jest"
   },
   "jest": {
+    "setupTestFrameworkScriptFile": "./jest.setup.ts",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
