@@ -1,7 +1,7 @@
 import {delay, getConnections, startConnections} from "./utils";
 import {Constant} from "./constant";
 import {ConnectionString} from "./connectionString";
-import * as request from "request-promise";
+import {Rest} from "./rest";
 
 const testMessage = 'Test Message';
 
@@ -18,18 +18,7 @@ test('broadcast serverless', async () => {
   await startConnections(connections);
   
   let url = ConnectionString.getPreviewRestUrl(hub);
-  await request({
-    method: 'POST',
-    uri: url,
-    headers: {
-      'Authorization': 'Bearer ' + ConnectionString.getToken(url)
-    },
-    body: {
-      target: Constant.broadcast,
-      arguments: [ 'hub-broadcast', testMessage ]
-    },
-    json: true
-  });
+  await Rest.broadcast(hub, Constant.broadcast, [ 'hub-broadcast', testMessage ]);
 
   await delay(Constant.delay);
   expect(callback).toBeCalledWith("hub-broadcast", testMessage);
@@ -49,19 +38,7 @@ test('sendToUser serverless', async () => {
 
   await startConnections(connections);
   
-  let url = ConnectionString.getPreviewRestUrl(hub) + '/user/' + userId;
-  await request({
-    method: 'POST',
-    uri: url,
-    headers: {
-      'Authorization': 'Bearer ' + ConnectionString.getToken(url)
-    },
-    body: {
-      target: Constant.sendUser,
-      arguments: [ 'send-to-user', testMessage ]
-    },
-    json: true
-  });
+  await Rest.sendToUser(hub, userId, Constant.sendUser, [ 'send-to-user', testMessage ]);
 
   await delay(Constant.delay);
   expect(callback).toBeCalledWith("send-to-user", testMessage);
