@@ -18,7 +18,8 @@ FROM signalr-test-base
 
 ENV Azure__SignalR__ConnectionString="" \
     DELAY="500" \
-    PORT="80"
+    PORT="80" \
+    TIMEOUT="60000"
 
 ARG SDKVersion
 ENV SDKVersion ${SDKVersion}
