@@ -1,9 +1,9 @@
 import {ConnectionString} from "./connectionString";
 import * as request from "request-promise";
 
-async function sendRequest(url:string, method:string, target:string, args: string[]){
+async function sendMessage(url:string, target:string, args: string[]){
   await request({
-    method: method,
+    method: 'POST',
     uri: url,
     headers: {
       'Authorization': 'Bearer ' + ConnectionString.getToken(url)
@@ -16,14 +16,39 @@ async function sendRequest(url:string, method:string, target:string, args: strin
   });
 }
 
+async function sendControl(url:string, method:string){
+  await request({
+    method: method,
+    uri: url,
+    headers: {
+      'Authorization': 'Bearer ' + ConnectionString.getToken(url)
+    }
+  });
+}
+
 export class Rest {
   public static readonly broadcast = async function (hub:string, target:string, args:string[]) {
     let url = ConnectionString.getPreviewRestUrl(hub);
-    await sendRequest(url, 'POST', target, args);
+    await sendMessage(url, target, args);
   };
 
   public static readonly sendToUser = async function (hub:string, userId:string, target:string, args:string[]) {
     let url = ConnectionString.getPreviewRestUrl(hub) + '/user/' + userId;
-    await sendRequest(url, 'POST', target, args);
+    await sendMessage(url, target, args);
+  }
+
+  public static readonly sendToGroup = async function (hub:string, group:string, target:string, args:string[]) {
+    let url = ConnectionString.getPreviewRestUrl(hub) + '/group/' + group;
+    await sendMessage(url, target, args);
+  }
+
+  public static readonly addUserToGroup = async function (hub:string, group:string, userId:string) {
+    let url = ConnectionString.getPreviewRestUrl(hub) + '/group/' + group + '/user/' + userId;
+    await sendControl(url, 'PUT');
+  }
+
+  public static readonly removeUserFromGroup = async function (hub:string, group:string, userId:string) {
+    let url = ConnectionString.getPreviewRestUrl(hub) + '/group/' + group + '/user/' + userId;
+    await sendControl(url, 'DELETE');
   }
 };
