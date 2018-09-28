@@ -39,4 +39,58 @@ async function startConnections(connections : HubConnection[]) {
   await Promise.all(promise);
 }
 
-export {delay, getConnections, startConnections};
+async function promiseOrTimeout(promise : Promise<void>, timeout : number) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeout))
+  ])
+}
+
+function Deferred() {
+  this.resolve = null;
+  this.reject = null;
+
+  this.promise = new Promise(function(resolve, reject) {
+    this.resolve = resolve;
+    this.reject = reject;
+  }.bind(this));
+  Object.freeze(this);
+}
+
+class DeferMap {
+  deferMap: Map<number | string, any>;
+  index: number;
+
+  constructor() {
+    this.deferMap = new Map();
+    // The index is count of calls
+    this.index = 1;
+  }
+
+  waitForPromise = (name : string | number) => {
+    let defer = new Deferred();
+    this.deferMap.set(name, defer);
+    return defer.promise;
+  };
+
+  setPromiseResult = (name: string | number = null, ...result : any[]) => {
+    if (name == null) {
+      name = this.index;
+      this.index = this.index + 1;
+    }
+    if (this.deferMap.has(name)) {
+      this.deferMap.get(name).resolve(result);
+    }
+  };
+
+  callback = (name: number | string = null, options: Function = null) => {
+    return (...args : any[]) => {
+      if (options != null) {
+        options();
+      }
+      this.setPromiseResult(name, ...args);
+    };
+  };
+}
+
+export {delay, getConnections, startConnections, promiseOrTimeout, Deferred, DeferMap};
