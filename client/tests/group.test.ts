@@ -24,7 +24,7 @@ test('join and leave group', async () => {
     .catch(err => expect(err).toBeNull());
   expect(await promise0).toEqual(['connection1', groupName]);
   expect(await promise1).toEqual(['connection1', groupName]);
-  await promiseOrTimeout(promise2, 1000).catch((error) => {
+  await promiseOrTimeout(promise2, Constant.awaitTimeout).catch((error) => {
     expect(error).not.toBeNull();
   });
 
@@ -36,7 +36,7 @@ test('join and leave group', async () => {
 
   promise1 = deferMapList[1].waitForPromise(3);
   await connections[0].invoke(Constant.sendGroup, 'connection0', groupName, testMessage);
-  await promiseOrTimeout(promise1, 1000).catch((error) => {
+  await promiseOrTimeout(promise1, Constant.awaitTimeout).catch((error) => {
     expect(error).not.toBeNull();
   });
 });
@@ -95,7 +95,7 @@ test('send group / groups / group except', async () => {
   promise1 = deferMapList[1].waitForPromise(4);
   await connections[1].invoke(Constant.sendGroupExcept, 'connection1', groupName, [connectionId1], testMessage);
   expect(await promise0).toEqual(['connection1', testMessage]);
-  await promiseOrTimeout(promise1, 1000).catch((error) => {
+  await promiseOrTimeout(promise1, Constant.awaitTimeout).catch((error) => {
     expect(error).not.toBeNull();
   });
 });
@@ -127,7 +127,7 @@ test('send others in group', async () => {
   await connections[0].invoke(Constant.sendOthersInGroup, 'connection0', groupName, testMessage);
   expect(await promise1).toEqual(['connection0', testMessage]);
   expect(await promise2).toEqual(['connection0', testMessage]);
-  await promiseOrTimeout(promise0, 1000).catch((error) => {
+  await promiseOrTimeout(promise0, Constant.awaitTimeout).catch((error) => {
     expect(error).not.toBeNull();
   });
 });

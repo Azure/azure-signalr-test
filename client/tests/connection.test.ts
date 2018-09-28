@@ -1,4 +1,4 @@
-import {delay, getConnections, startConnections} from "./utils";
+import {DeferMap, getConnections, promiseOrTimeout, startConnections} from "./utils";
 import {Constant} from "./constant";
 
 const testMessage = 'Test Message';
@@ -23,37 +23,34 @@ test('echo', async () => {
 });
 
 test('broadcast', async () => {
+  const deferMap = new DeferMap();
+
   let connections = getConnections(3);
-
-  const callback = jest.fn();
   for (let i = 0; i < connections.length; i++) {
-    connections[i].on(Constant.broadcast, callback);
+    connections[i].on(Constant.broadcast, deferMap.callback());
   }
-
   await startConnections(connections);
 
+  let promise = deferMap.waitForPromise(3);
   await connections[0].invoke(Constant.broadcast, "connection0", testMessage);
-
-  await delay(Constant.delay);
-  expect(callback).toBeCalledWith("connection0", testMessage);
-  expect(callback).toHaveBeenCalledTimes(3);
+  expect(await promise).toEqual(['connection0', testMessage]);
 });
 
 test('send others', async () => {
+  const deferMapList = [new DeferMap(), new DeferMap(), new DeferMap()];
+
   let connections = getConnections(3);
-
-  const callbacks = [jest.fn(), jest.fn(), jest.fn()];
   for (let i = 0; i < connections.length; i++) {
-    connections[i].on(Constant.echo, callbacks[i]);
+    connections[i].on(Constant.echo, deferMapList[i].callback());
   }
-
   await startConnections(connections);
 
+  let promise0 = deferMapList[0].waitForPromise(1);
+  let promise1 = deferMapList[1].waitForPromise(1);
+  let promise2 = deferMapList[2].waitForPromise(1);
   await connections[0].invoke(Constant.sendOthers, "connection0", testMessage);
-  await delay(Constant.delay);
-
-  expect(callbacks[0]).not.toHaveBeenCalledWith("connection0", testMessage);
-  expect(callbacks[1]).toHaveBeenCalledWith("connection0", testMessage);
-  expect(callbacks[2]).toHaveBeenCalledWith("connection0", testMessage);
+  expect(await promise1).toEqual(['connection0', testMessage]);
+  expect(await promise2).toEqual(['connection0', testMessage]);
+  await promiseOrTimeout(promise0, Constant.awaitTimeout).catch(error => expect(error).not.toBeNull());
 });
 
