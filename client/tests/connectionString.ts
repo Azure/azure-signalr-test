@@ -15,7 +15,9 @@ function getConnectionString() {
 
 export class ConnectionString {
   public static readonly value = getConnectionString();
+  // @ts-ignore
   public static readonly endpoint = ConnectionString.value.endpoint;
+  // @ts-ignore
   public static readonly key = ConnectionString.value.accesskey;
   public static readonly getClientUrl = function(hub:string) {
     return `${ConnectionString.endpoint}:5001/client/?hub=${hub}`;
