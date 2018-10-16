@@ -3,7 +3,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <UserSecretsId>testserver</UserSecretsId>
     <RootNamespace>Microsoft.Azure.SignalR.Test.Server</RootNamespace>
-    <PackageVersion>1.0.0-preview1-10200</PackageVersion>
+    <PackageVersion>1.0.0</PackageVersion>
     <PackageVersion Condition=" '$(SDKVersion)' != '' ">$(SDKVersion)</PackageVersion>
   </PropertyGroup>
 
