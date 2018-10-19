@@ -39,6 +39,14 @@ async function startConnections(connections : HubConnection[]) {
   await Promise.all(promise);
 }
 
+async function stopConnections(connections: HubConnection[]) {
+  let promise = new Array(connections.length);
+  for (let i in connections) {
+    promise[i] = connections[i].stop();
+  }
+  await Promise.all(promise);
+}
+
 async function promiseOrTimeout(promise : Promise<void>, timeout : number) {
   return Promise.race([
     promise,
@@ -93,4 +101,4 @@ class DeferMap {
   };
 }
 
-export {delay, getConnections, startConnections, promiseOrTimeout, Deferred, DeferMap};
+export {delay, getConnections, startConnections, stopConnections, promiseOrTimeout, Deferred, DeferMap};

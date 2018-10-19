@@ -1,4 +1,4 @@
-import {getConnections, startConnections} from "./utils";
+import {getConnections, startConnections, stopConnections} from "./utils";
 import {Constant} from "./constant";
 
 const testMessage = 'Test Message';
@@ -15,6 +15,7 @@ test('generic hub', async () => {
   await connections[0].invoke('echo', connectionName, testMessage);
 
   expect(echoCallback).toBeCalledWith(connectionName, testMessage);
+  await stopConnections(connections);
 });
 
 test('long name hub with length 128', async () => {
@@ -29,4 +30,5 @@ test('long name hub with length 128', async () => {
   await connections[0].invoke('echo', connectionName, testMessage);
 
   expect(echoCallback).toBeCalledWith(connectionName, testMessage);
+  await stopConnections(connections);
 });
