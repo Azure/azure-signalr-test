@@ -1,4 +1,4 @@
-import { getConnections, startConnections } from "./utils";
+import {getConnections, startConnections, stopConnections} from "./utils";
 import { Constant } from "./constant";
 
 const semver = require('semver');
@@ -11,6 +11,7 @@ if (semver.gte(sdkVerion, '1.0.0-preview1-10197')) {
     await startConnections(connections);  
     path = await connections[0].invoke("getPath");  
     expect(path).toBe("/chat");
+    await stopConnections(connections);
   }); 
 
   test('HttpRequest.Request.QueryString is preserved', async () => {
@@ -19,6 +20,7 @@ if (semver.gte(sdkVerion, '1.0.0-preview1-10197')) {
     await startConnections(connections);  
     queryString = await connections[0].invoke("getQueryString");  
     expect(queryString).toContain("&customName=customValue&");
+    await stopConnections(connections);
   });
 }
 else {

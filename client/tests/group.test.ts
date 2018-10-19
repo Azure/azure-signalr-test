@@ -1,4 +1,4 @@
-import {getConnections, startConnections, DeferMap, promiseOrTimeout} from './utils';
+import {getConnections, startConnections, DeferMap, promiseOrTimeout, stopConnections} from './utils';
 import {Constant} from "./constant";
 
 test('join and leave group', async () => {
@@ -39,6 +39,8 @@ test('join and leave group', async () => {
   await promiseOrTimeout(promise1, Constant.awaitTimeout).catch((error) => {
     expect(error).not.toBeNull();
   });
+
+  await stopConnections(connections);
 });
 
 test('send group / groups / group except', async () => {
@@ -98,6 +100,8 @@ test('send group / groups / group except', async () => {
   await promiseOrTimeout(promise1, Constant.awaitTimeout).catch((error) => {
     expect(error).not.toBeNull();
   });
+
+  await stopConnections(connections);
 });
 
 test('send others in group', async () => {
@@ -130,4 +134,6 @@ test('send others in group', async () => {
   await promiseOrTimeout(promise0, Constant.awaitTimeout).catch((error) => {
     expect(error).not.toBeNull();
   });
+
+  await stopConnections(connections);
 });

@@ -1,4 +1,4 @@
-import {delay, getConnections, startConnections, DeferMap, promiseOrTimeout} from './utils';
+import {delay, getConnections, startConnections, DeferMap, promiseOrTimeout, stopConnections} from './utils';
 import {Constant} from "./constant";
 
 test('send user and users', async () => {
@@ -20,4 +20,5 @@ test('send user and users', async () => {
   await connections[1].invoke(Constant.sendUsers, 'connection1', ['user0', 'user1'], testMessage);
   expect(await promise0).toEqual(['connection1', testMessage]);
   expect(await promise1).toEqual(['connection1', testMessage]);
+  await stopConnections(connections);
 });

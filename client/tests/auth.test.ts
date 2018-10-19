@@ -1,4 +1,4 @@
-import {delay, getConnections, startConnections} from "./utils";
+import {delay, getConnections, startConnections, stopConnections} from "./utils";
 import {Constant} from "./constant";
 import * as request from "request-promise";
 
@@ -17,4 +17,5 @@ test('auth with jwt', async () => {
   await connections[0].invoke(Constant.echo, 'connection0', testMessage);
   await delay(Constant.delay);
   expect(callback).toHaveBeenCalledWith('connection0', testMessage);
+  await stopConnections(connections);
 });
