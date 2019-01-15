@@ -20,10 +20,10 @@ export class ConnectionString {
   // @ts-ignore
   public static readonly key = ConnectionString.value.accesskey;
   public static readonly getClientUrl = function(hub:string) {
-    return `${ConnectionString.endpoint}:5001/client/?hub=${hub}`;
+    return `${ConnectionString.endpoint}/client/?hub=${hub}`;
   }
-  public static readonly getPreviewRestUrl = function(hub:string){
-    return  `${ConnectionString.endpoint}:5002/api/v1-preview/hub/${hub}`;
+  public static readonly getRestUrl = function(hub:string){
+    return  `${ConnectionString.endpoint}/api/v1/hubs/${hub}`;
   }
   public static readonly getToken = function(aud:string,userId?:string){
     let claim = {
