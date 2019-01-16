@@ -17,7 +17,6 @@ test('broadcast serverless', async () => {
 
   await startConnections(connections);
   
-  let url = ConnectionString.getPreviewRestUrl(hub);
   await Rest.broadcast(hub, Constant.broadcast, [ 'hub-broadcast', testMessage ]);
 
   await delay(Constant.delay);
