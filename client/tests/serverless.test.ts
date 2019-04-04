@@ -48,6 +48,8 @@ test('sendToGroup serverless', async () => {
   const hub = 'serverless';
   const group = 'groupX';
   const userId = 'userA';
+
+  const restApiDelay = 5000;
   
   let conn1 = getConnections(1, ConnectionString.getClientUrl(hub), null, ConnectionString.getToken(ConnectionString.getClientUrl(hub), userId));
 
@@ -59,13 +61,13 @@ test('sendToGroup serverless', async () => {
   await startConnections(conn1);
   
   await Rest.addUserToGroup(hub, group, userId);
-  await delay(Constant.delay);
+  await delay(restApiDelay);
 
   await Rest.sendToGroup(hub, group, Constant.sendGroup, [ 'send-to-group', testMessage ]);
-  await delay(Constant.delay);
+  await delay(restApiDelay);
 
-  // expect(callback).toBeCalledWith("send-to-group", testMessage);
-  // expect(callback).toHaveBeenCalledTimes(1);
+  expect(callback).toBeCalledWith("send-to-group", testMessage);
+  expect(callback).toHaveBeenCalledTimes(1);
 
   let conn2 = getConnections(1, ConnectionString.getClientUrl(hub), null, ConnectionString.getToken(ConnectionString.getClientUrl(hub), userId));
 
@@ -76,16 +78,15 @@ test('sendToGroup serverless', async () => {
   await startConnections(conn2);
 
   await Rest.sendToGroup(hub, group, Constant.sendGroup, [ 'send-to-group', testMessage ]);
-  await delay(Constant.delay);
+  await delay(restApiDelay);
 
-  // expect(callback).toHaveBeenCalledTimes(3);
+  expect(callback).toHaveBeenCalledTimes(3);
 
   await Rest.removeUserFromGroup(hub, group, userId);
-  await delay(Constant.delay);
+  await delay(restApiDelay);
 
   await Rest.sendToGroup(hub, group, Constant.sendGroup, [ 'send-to-group', testMessage ]);
-  await delay(Constant.delay);
+  await delay(restApiDelay);
 
-  // expect(callback).toHaveBeenCalledTimes(3);
-  expect(callback).toBeCalled();
+  expect(callback).toHaveBeenCalledTimes(3);
 });
