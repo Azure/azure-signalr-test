@@ -52,6 +52,7 @@ namespace Microsoft.Azure.SignalR.Test.Server
             services.AddSignalR()
                 .AddAzureSignalR(options =>
                 {
+                    options.ConnectionCount = 1;
                     options.ClaimsProvider = context =>
                     {
                         if (context.Request.Query["username"].Count != 0)
