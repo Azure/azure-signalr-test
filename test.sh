@@ -18,8 +18,7 @@ fi
 
 pushd ${DIR}
 
-docker build -q -t signalr-test-base -f ./RuntimeBase.Dockerfile .
-docker build -q -t signalr-test:$VERSION --build-arg SDKVersion=$VERSION .
+docker build -t signalr-test:$VERSION --build-arg SDKVersion=$VERSION .
 docker run --rm -e Azure__SignalR__ConnectionString="${CONNECTION_STRING}" -e DELAY=1000 signalr-test:${VERSION}
 
 popd
