@@ -14,7 +14,7 @@ COPY server ./
 RUN dotnet publish -c Release -o out
 
 # build runtime image
-FROM signalr-test-base
+FROM zackliu/signalr-test-base
 
 ENV Azure__SignalR__ConnectionString="" \
     DELAY="500" \

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Microsoft.Azure.SignalR.Test.Server
@@ -25,13 +26,13 @@ namespace Microsoft.Azure.SignalR.Test.Server
             Clients.AllExcept(Context.ConnectionId).SendAsync("echo", name, message);
         }
 
-        public async void JoinGroup(string name, string groupName)
+        public async Task JoinGroup(string name, string groupName)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             await Clients.Group(groupName).SendAsync("echo", name, groupName);
         }
 
-        public async void LeaveGroup(string name, string groupName)
+        public async Task LeaveGroup(string name, string groupName)
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
             await Clients.Client(Context.ConnectionId).SendAsync("echo", name, groupName);
