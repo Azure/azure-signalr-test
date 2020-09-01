@@ -6,7 +6,7 @@ async function sendMessage(url: string, target: string, args: string[]) {
     method: 'POST',
     uri: url,
     headers: {
-      'Authorization': 'Bearer ' + ConnectionString.getToken(url)
+      'Authorization': 'Bearer ' + ConnectionString.getTokenFactory(url)()
     },
     body: {
       target: target,
@@ -21,7 +21,7 @@ async function sendControl(url: string, method: string) {
     method: method,
     uri: url,
     headers: {
-      'Authorization': 'Bearer ' + ConnectionString.getToken(url)
+      'Authorization': 'Bearer ' + ConnectionString.getTokenFactory(url)()
     }
   });
 }
