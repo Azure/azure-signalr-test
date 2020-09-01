@@ -1,5 +1,5 @@
-import {getConnections, startConnections, stopConnections} from "./utils";
-import {Constant} from "./constant";
+import { getConnections, startConnections, stopConnections } from "./utils";
+import { Constant } from "./constant";
 
 const testMessage = 'Test Message';
 

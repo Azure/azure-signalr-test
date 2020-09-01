@@ -1,11 +1,11 @@
-import {delay, getConnections, startConnections, stopConnections} from "./utils";
-import {Constant} from "./constant";
+import { delay, getConnections, startConnections, stopConnections } from "./utils";
+import { Constant } from "./constant";
 import * as request from "request-promise";
 
 const testMessage = 'Test Message';
 
 test('auth with jwt', async () => {
-  let usernameFactory = function(_) : string {return 'jwtUser'};
+  let usernameFactory = function (_): string { return 'jwtUser' };
   let username = usernameFactory(0);
   let role = 'Admin';
   let token = await request(`${Constant.host}/jwt/login?username=${username}&role=${role}`);

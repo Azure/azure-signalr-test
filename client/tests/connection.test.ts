@@ -1,5 +1,5 @@
-import {DeferMap, getConnections, promiseOrTimeout, startConnections, stopConnections} from "./utils";
-import {Constant} from "./constant";
+import { DeferMap, getConnections, promiseOrTimeout, startConnections, stopConnections } from "./utils";
+import { Constant } from "./constant";
 
 const testMessage = 'Test Message';
 
