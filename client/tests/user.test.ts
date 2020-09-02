@@ -1,5 +1,5 @@
-import {delay, getConnections, startConnections, DeferMap, promiseOrTimeout, stopConnections} from './utils';
-import {Constant} from "./constant";
+import { delay, getConnections, startConnections, DeferMap, promiseOrTimeout, stopConnections } from './utils';
+import { Constant } from "./constant";
 
 test('send user and users', async () => {
   const deferMapList = [new DeferMap(), new DeferMap()];

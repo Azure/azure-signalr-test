@@ -1,5 +1,5 @@
-import {getConnections, startConnections, DeferMap, promiseOrTimeout, stopConnections} from './utils';
-import {Constant} from "./constant";
+import { getConnections, startConnections, DeferMap, promiseOrTimeout, stopConnections } from './utils';
+import { Constant } from "./constant";
 
 test('join and leave group', async () => {
   const deferMapList = [new DeferMap(), new DeferMap(), new DeferMap()];
