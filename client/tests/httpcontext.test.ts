@@ -16,7 +16,7 @@ if (semver.gte(sdkVerion, '1.0.0-preview1-10197')) {
 
   test('HttpRequest.Request.QueryString is preserved', async () => {
     let queryString: string;
-    const connections = getConnections(1, Constant.url + "?customName=customValue");
+    const connections = getConnections(1, Constant.Server.ChatUrl + "?customName=customValue");
     await startConnections(connections);
     queryString = await connections[0].invoke("getQueryString");
     expect(queryString).toContain("&customName=customValue&");

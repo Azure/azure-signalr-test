@@ -25,7 +25,7 @@ export class ConnectionString {
   public static readonly getRestUrl = function (hub: string) {
     return `${ConnectionString.endpoint}/api/v1/hubs/${hub}`;
   }
-  public static readonly getToken = function (aud: string, userId?: string) {
+  public static readonly getTokenFactory = function (aud: string, userId?: string): () => string {
     let claim = {
       "aud": aud,
       "exp": new Date().valueOf() + (24 * 60 * 60 * 1000)
@@ -33,6 +33,6 @@ export class ConnectionString {
     if (userId) {
       claim['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] = userId;
     }
-    return nJwt.create(claim, ConnectionString.key, "HS256").compact()
+    return () => nJwt.create(claim, ConnectionString.key, "HS256").compact()
   }
 }

@@ -7,8 +7,8 @@ const testMessage = 'Test Message';
 
 test('broadcast serverless', async () => {
   const hub = 'serverless';
-
-  let connections = getConnections(1, ConnectionString.getClientUrl(hub), null, ConnectionString.getToken(ConnectionString.getClientUrl(hub)));
+  
+  let connections = getConnections(1, ConnectionString.getClientUrl(hub), null, ConnectionString.defaultTokenFactory(ConnectionString.getClientUrl(hub)));
 
   const callback = jest.fn();
   for (let i = 0; i < connections.length; i++) {
@@ -27,8 +27,8 @@ test('broadcast serverless', async () => {
 test('sendToUser serverless', async () => {
   const hub = 'serverless';
   const userId = 'user1';
-
-  let connections = getConnections(2, ConnectionString.getClientUrl(hub), null, ConnectionString.getToken(ConnectionString.getClientUrl(hub), userId));
+  
+  let connections = getConnections(2, ConnectionString.getClientUrl(hub), null, ConnectionString.getTokenFactory(ConnectionString.getClientUrl(hub), userId));
 
   const callback = jest.fn();
   for (let i = 0; i < connections.length; i++) {
@@ -48,8 +48,8 @@ test('sendToGroup serverless', async () => {
   const hub = 'serverless';
   const group = 'groupX';
   const userId = 'userA';
-
-  let conn1 = getConnections(1, ConnectionString.getClientUrl(hub), null, ConnectionString.getToken(ConnectionString.getClientUrl(hub), userId));
+  
+  let conn1 = getConnections(1, ConnectionString.getClientUrl(hub), null, ConnectionString.getTokenFactory(ConnectionString.getClientUrl(hub), userId));
 
   const callback = jest.fn();
   for (let i = 0; i < conn1.length; i++) {
@@ -67,7 +67,7 @@ test('sendToGroup serverless', async () => {
   // expect(callback).toBeCalledWith("send-to-group", testMessage);
   // expect(callback).toHaveBeenCalledTimes(1);
 
-  let conn2 = getConnections(1, ConnectionString.getClientUrl(hub), null, ConnectionString.getToken(ConnectionString.getClientUrl(hub), userId));
+  let conn2 = getConnections(1, ConnectionString.getClientUrl(hub), null, ConnectionString.getTokenFactory(ConnectionString.getClientUrl(hub), userId));
 
   for (let i = 0; i < conn2.length; i++) {
     conn2[i].on(Constant.sendGroup, callback);

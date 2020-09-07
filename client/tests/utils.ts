@@ -13,8 +13,8 @@ async function delay(milliseconds: number) {
   });
 }
 
-function getConnections(count: number, url = Constant.url, usernameFactory?: (number) => string, accessToken?: string) {
-  let connections: HubConnection[] = new Array(count);
+function getConnections(count : number, url = Constant.Server.ChatUrl, usernameFactory? : (number) => string, accessTokenFactory? : () => string | Promise<string>){
+  let connections : HubConnection[] = new Array(count);
   for (let i = 0; i < connections.length; i++) {
     let username: string;
     if (usernameFactory != null) {
@@ -24,7 +24,7 @@ function getConnections(count: number, url = Constant.url, usernameFactory?: (nu
     }
     connections[i] = new signalR.HubConnectionBuilder()
       .withUrl(appendQueryParameter(url, 'username', username), {
-        accessTokenFactory: () => accessToken
+        accessTokenFactory: accessTokenFactory
       })
       .build();
   }
