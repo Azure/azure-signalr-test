@@ -16,6 +16,7 @@ namespace Microsoft.Azure.SignalR.Test.ServerAad
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseUrls("http://0.0.0.0:81")
                 .UseStartup<Startup>();
     }
 }

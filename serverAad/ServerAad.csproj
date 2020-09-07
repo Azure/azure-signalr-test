@@ -12,8 +12,4 @@
     <PackageReference Include="Microsoft.Azure.SignalR" Version="$(PackageVersion)" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.17.1" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\server\Server.csproj" />
-  </ItemGroup>
 </Project>

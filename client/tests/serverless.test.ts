@@ -8,7 +8,7 @@ const testMessage = 'Test Message';
 test('broadcast serverless', async () => {
   const hub = 'serverless';
   
-  let connections = getConnections(1, ConnectionString.getClientUrl(hub), null, ConnectionString.defaultTokenFactory(ConnectionString.getClientUrl(hub)));
+  let connections = getConnections(1, ConnectionString.getClientUrl(hub), null, ConnectionString.getTokenFactory(ConnectionString.getClientUrl(hub)));
 
   const callback = jest.fn();
   for (let i = 0; i < connections.length; i++) {
