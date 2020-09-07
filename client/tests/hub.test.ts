@@ -4,7 +4,7 @@ import { Constant } from "./constant";
 const testMessage = 'Test Message';
 
 test('generic hub', async () => {
-  const connections = getConnections(1, `${Constant.host}/genericchat`);
+  const connections = getConnections(1, `${Constant.Server.Host}/genericchat`);
   const connectionName = 'connection';
 
   const echoCallback = jest.fn();
@@ -19,7 +19,7 @@ test('generic hub', async () => {
 });
 
 test('long name hub with length 128', async () => {
-  const connections = getConnections(1, `${Constant.host}/longnamechat`);
+  const connections = getConnections(1, `${Constant.Server.Host}/longnamechat`);
   const connectionName = 'connection';
 
   const echoCallback = jest.fn();
