@@ -24,7 +24,7 @@ function getConnections(count : number, url = Constant.Server.ChatUrl, usernameF
     }
     connections[i] = new signalR.HubConnectionBuilder()
       .withUrl(appendQueryParameter(url, 'username', username), {
-        accessTokenFactory: accessTokenFactory
+        accessTokenFactory: accessTokenFactory == null ? () => "" : accessTokenFactory
       })
       .build();
   }

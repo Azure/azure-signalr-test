@@ -10,7 +10,7 @@ test('auth with jwt', async () => {
   let role = 'Admin';
   let token = await request(`${Constant.Server.Host}/jwt/login?username=${username}&role=${role}`);
 
-  let connections = getConnections(1, Constant.Server.ChatJwtUrl, usernameFactory, token);
+  let connections = getConnections(1, Constant.Server.ChatJwtUrl, usernameFactory, () => token);
   let callback = jest.fn();
   connections[0].on(Constant.echo, callback);
   await startConnections(connections);
