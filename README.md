@@ -16,6 +16,15 @@ Then you can run the test with Azure SignalR Service
 docker run -e Azure__SignalR__ConnectionString="<your connection string>"  signalr-test:<sdk version>
 ```
 
+## How to upload images to private container registry
+
+```bash
+az login // use microsoft account
+az acr login -n genevadev
+```
+
+Then `docker push <image>`
+
 ## Test Coverage
 * Connect / Echo / Broadcast / AllExcept
 * Group join / leave

@@ -5,6 +5,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# npm test config
+junit.xml
+
 # Runtime data
 pids
 *.pid

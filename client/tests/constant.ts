@@ -12,7 +12,7 @@ export class Constant {
   public static readonly sendUsers = 'sendusers';
   public static readonly getConnectionId = 'getconnectionid';
 
-  public static readonly port = parseInt(process.env.PORT) || 5000;
+  public static readonly port = parseInt(process.env.PORT) || 80;
 
   public static readonly Server = function () {
     let port = Constant.port;
@@ -27,7 +27,7 @@ export class Constant {
   }();
 
   public static readonly ServerAad = function () {
-    let port = Constant.port + 1;
+    let port = parseInt(process.env.PORTAAD) || 81;
     let host = `http://localhost:${port}`;
     return {
       Host: host,
