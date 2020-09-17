@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ManagementE2ETest": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "Azure__SignalR__ConnectionString": ""
+      }
+    }
+  }
+}
