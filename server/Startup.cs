@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -37,7 +38,23 @@ namespace Microsoft.Azure.SignalR.Test.Server
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            if (Environment.GetEnvironmentVariable("SERVER_AAD") != null)
+            {
+                services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(option =>
+                {
+                    var tenantId = Environment.GetEnvironmentVariable("tenantId") ?? "";
+                    option.Authority = $"https://login.microsoftonline.com/{tenantId}";
+
+                    option.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false,
+                    };
+                });
+            }
+            else
+            {
+                services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(option =>
                 {
                     option.TokenValidationParameters = new TokenValidationParameters
@@ -47,12 +64,29 @@ namespace Microsoft.Azure.SignalR.Test.Server
                         IssuerSigningKey = JwtController.SigningCreds.Key
                     };
                 });
+            }
 
             services.AddMvc();
             services.AddSignalR()
                 .AddAzureSignalR(options =>
                 {
                     options.ConnectionCount = 1;
+
+#if AAD_ENABLED
+                    if (Environment.GetEnvironmentVariable("SERVICE_AAD") != null)
+                    {
+                        var connectionString = Environment.GetEnvironmentVariable("Azure__SignalR__ConnectionString") ?? throw new ArgumentNullException();
+                        var endpoint = connectionString.Split(";")[0].Split("=")[1];
+
+                        var clientId = Environment.GetEnvironmentVariable("clientId") ?? throw new ArgumentNullException();
+                        var clientSecret = Environment.GetEnvironmentVariable("clientSecret") ?? throw new ArgumentNullException();
+                        var tenantId = Environment.GetEnvironmentVariable("tenantId") ?? throw new ArgumentNullException();
+                        var authOptions = new AadApplicationOptions(clientId, tenantId).WithClientSecret(clientSecret);
+
+                        options.Endpoints = new ServiceEndpoint[] { new ServiceEndpoint(endpoint, authOptions) };
+                    }
+#endif
+
                     options.ClaimsProvider = context =>
                     {
                         if (context.Request.Query["username"].Count != 0)

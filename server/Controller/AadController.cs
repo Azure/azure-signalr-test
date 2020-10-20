@@ -6,7 +6,7 @@ using Microsoft.Identity.Client;
 namespace Microsoft.Azure.SignalR.Test.Server
 {
     [Route("aad")]
-    public class AadController : ControllerBase
+    public class AadController : Controller
     {
         private const string Audience = "https://signalr.azure.com";
 
@@ -36,3 +36,4 @@ namespace Microsoft.Azure.SignalR.Test.Server
         }
     }
 }
+
