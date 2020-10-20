@@ -43,7 +43,7 @@ namespace Microsoft.Azure.SignalR.Test.Server
                 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(option =>
                 {
-                    var tenantId = Environment.GetEnvironmentVariable("tenantId") ?? "";
+                    var tenantId = Environment.GetEnvironmentVariable("tenantId") ?? throw new ArgumentNullException();
                     option.Authority = $"https://login.microsoftonline.com/{tenantId}";
 
                     option.TokenValidationParameters = new TokenValidationParameters
