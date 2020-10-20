@@ -4,16 +4,48 @@ The project to provide automation E2E test on SignalR sdk and service runtime.
 ## How to build and run
 First check the SDK version needed. Each SDKVerison will build a separate docker image and the tag is the sdk version.
 ```bash
-# build-image.sh
-declare -a SDKVersion=("1.0.0-preview1-10009" "1.0.0-preview1-10011")
+declare -a SDKVersion=("1.5.0" "1.5.1")
 ```
+
+### Run tests for Server SDK
+
 ```bash
-./build-image.sh
+./build-sdk-image.sh
 ```
 
 Then you can run the test with Azure SignalR Service
+
 ```bash
-docker run -e Azure__SignalR__ConnectionString="<your connection string>"  signalr-test:<sdk version>
+docker run -e Azure__SignalR__ConnectionString="<your connection string>" signalr-test:<sdk version>
+```
+
+
+#### Run tests with app server AAD Auth
+
+This test case is for a specific scenario, in which our customer used AAD Auth to authenticate their incoming requests.
+
+Our SDK will simply pass most of the claims in the given JWT Token (for accessing their app server) to the newly generated JWT Token (for connecting to our service).
+
+However, there are still some internal claims that will not be passed.
+
+This test is to check if any of these unpassed claims will cause problems while connecting to ASRS. 
+
+```bash
+docker run -e Azure__SignalR__ConnectionString="<your connection string>" -e signalr-test:<sdk version> -e clientId="<clientId>" -e clientSecret="<clientSecret>" -e tenantId="<tenantId>" run-server-aad.sh
+```
+
+> The `clientId`, `clientSecret`, `tenantId` here could be any valid [AAD Application](https://ms.portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps).
+
+### Run tests for Management SDK
+
+```bash
+./build-management-image.sh
+```
+
+Then you can run the test with Azure SignalR Service
+
+```bash
+docker run -e Azure__SignalR__ConnectionString="<your connection string>" signalr-management-sdk-test:<sdk version>
 ```
 
 ## How to upload images to private container registry
