@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true,
+    "lib": [ "ES2015" ]
+  },
+  "include": [
+    "tests/**/*",
+    "node_modules/typescript/lib/typescriptServices.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
