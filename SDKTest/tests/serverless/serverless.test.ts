@@ -1,7 +1,7 @@
-import { delay, getConnections, startConnections } from "./utils";
-import { Constant } from "./constant";
-import { ConnectionString } from "./connectionString";
-import { Rest } from "./rest";
+import { delay, getConnections, startConnections } from "../utils";
+import { Constant } from "../constant";
+import { ConnectionString } from "../connectionString";
+import { Rest } from "../rest";
 
 const testMessage = 'Test Message';
 

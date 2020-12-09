@@ -1,5 +1,5 @@
-import { getConnections, startConnections, stopConnections } from "./utils";
-import { Constant } from "./constant";
+import { getConnections, startConnections, stopConnections } from "../utils";
+import { Constant } from "../constant";
 import * as request from "request-promise";
 
 function AadTokenFactory() : Promise<string> {

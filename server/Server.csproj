@@ -7,10 +7,6 @@
     <PackageVersion Condition=" '$(SDKVersion)' != '' ">$(SDKVersion)</PackageVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(AAD_ENABLED)' != ''">
-    <DefineConstants>AAD_ENABLED</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
     <PackageReference Include="Microsoft.Azure.SignalR" Version="$(PackageVersion)" />

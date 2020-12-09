@@ -1,6 +1,9 @@
 FROM microsoft/dotnet:2.1-sdk-stretch AS build-env
 WORKDIR /app
 
+ARG SDKVersion
+ENV SDKVersion ${SDKVersion}
+
 # copy server and build
 WORKDIR /app/server
 RUN mkdir server
@@ -21,18 +24,12 @@ ENV Azure__SignalR__ConnectionString="" \
 ARG SDKVersion
 ENV SDKVersion ${SDKVersion}
 
-ARG AAD_ENABLED
-ENV AAD_ENABLED ${AAD_ENABLED}
-
 # Copy Server and Client
-RUN mkdir server SDKTest SDKTestWithAAD
+RUN mkdir server SDKTest
 COPY --from=build-env /app/server/out server/
 
 COPY SDKTest SDKTest/
 RUN cd SDKTest && npm install && cd ..
-
-COPY SDKTestWithAAD SDKTestWithAAD/
-RUN cd SDKTestWithAAD && npm install && cd ..
 
 COPY run*.sh /
 RUN chmod +x run*.sh
