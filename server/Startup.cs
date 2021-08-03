@@ -70,8 +70,6 @@ namespace Microsoft.Azure.SignalR.Test.Server
             services.AddSignalR()
                 .AddAzureSignalR(options =>
                 {
-                    options.ConnectionCount = 1;
-
 #if AAD_ENABLED
                     if (Environment.GetEnvironmentVariable("SERVICE_AAD") != null)
                     {
