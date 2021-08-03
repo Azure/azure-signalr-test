@@ -14,6 +14,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
     <PackageReference Include="Microsoft.Azure.SignalR" Version="$(PackageVersion)" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.17.1" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.30.1" />
   </ItemGroup>
 </Project>
