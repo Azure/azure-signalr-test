@@ -1,5 +1,3 @@
-global.XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-
 import { HubConnection } from "@aspnet/signalr";
 import * as signalR from "@aspnet/signalr";
 import { Constant } from "./constant";

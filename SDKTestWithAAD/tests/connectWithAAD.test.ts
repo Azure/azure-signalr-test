@@ -6,7 +6,7 @@ function AadTokenFactory() : Promise<string> {
   return request(`${Constant.Server.Host}/aad/login`);
 }
 
-test('aad connect to server', async () => {
+test('connect to server with aad token', async () => {
   const connections = getConnections(1, Constant.Server.ChatUrl, null, AadTokenFactory);
   await startConnections(connections);
   await stopConnections(connections);

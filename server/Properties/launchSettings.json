@@ -12,8 +12,8 @@
       "commandName": "Project",
       "environmentVariables": {
         "clientSecret": "gWq=wErBFjDA.HkhSteqx--44CsRg4Z4",
+        "SDKVersion": "1.8.2",
         "clientId": "7421186e-2541-48ca-ac95-9065858b11a5",
-        "SERVER_AAD": "1",
         "Azure__SignalR__ConnectionString": "***REDACTED***",
         "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
         "ASPNETCORE_ENVIRONMENT": "Development"
