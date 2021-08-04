@@ -38,7 +38,9 @@ namespace Microsoft.Azure.SignalR.Test.Server
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
 
-            if (Environment.GetEnvironmentVariable("SERVER_AAD") != null)
+            var serverAad = Environment.GetEnvironmentVariable("SERVER_AAD");
+
+            if (!string.IsNullOrEmpty(serverAad))
             {
                 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(option =>
@@ -70,21 +72,6 @@ namespace Microsoft.Azure.SignalR.Test.Server
             services.AddSignalR()
                 .AddAzureSignalR(options =>
                 {
-#if AAD_ENABLED
-                    if (Environment.GetEnvironmentVariable("SERVICE_AAD") != null)
-                    {
-                        var connectionString = Environment.GetEnvironmentVariable("Azure__SignalR__ConnectionString") ?? throw new ArgumentNullException();
-                        var endpoint = connectionString.Split(";")[0].Split("=")[1];
-
-                        var clientId = Environment.GetEnvironmentVariable("clientId") ?? throw new ArgumentNullException();
-                        var clientSecret = Environment.GetEnvironmentVariable("clientSecret") ?? throw new ArgumentNullException();
-                        var tenantId = Environment.GetEnvironmentVariable("tenantId") ?? throw new ArgumentNullException();
-                        var authOptions = new AadApplicationOptions(clientId, tenantId).WithClientSecret(clientSecret);
-
-                        options.Endpoints = new ServiceEndpoint[] { new ServiceEndpoint(endpoint, authOptions) };
-                    }
-#endif
-
                     options.ClaimsProvider = context =>
                     {
                         if (context.Request.Query["username"].Count != 0)

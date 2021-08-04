@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-
 SERVER_AAD=1 dotnet server/Server.dll > /dev/null &
 
 # Wait for server to have started
