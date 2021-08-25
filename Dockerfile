@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1-sdk-stretch AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:2.1-stretch AS build-env
 WORKDIR /app
 
 # copy server and build
