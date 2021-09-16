@@ -8,7 +8,7 @@ pushd ${DIR}
 # Build the base docker image
 docker build -t signalr-test-base -f ./RuntimeBase.Dockerfile .
 
-declare -a SDKVersion=("1.8.2" "1.9.0")
+declare -a SDKVersion=("1.0.14" "1.2.3" "1.4.3" "1.5.1" "1.8.2" "1.9.0" "1.10.0" "1.11.0")
 
 for version in "${SDKVersion[@]}"; do
     echo $version
