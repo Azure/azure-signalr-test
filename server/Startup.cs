@@ -3,6 +3,7 @@
 
 using System;
 using System.Security.Claims;
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -72,6 +73,8 @@ namespace Microsoft.Azure.SignalR.Test.Server
             services.AddSignalR()
                 .AddAzureSignalR(options =>
                 {
+                    options.ConnectionCount = 2;
+
                     options.ClaimsProvider = context =>
                     {
                         if (context.Request.Query["username"].Count != 0)
