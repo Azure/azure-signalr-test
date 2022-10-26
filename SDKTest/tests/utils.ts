@@ -5,18 +5,23 @@ import * as signalR from "@aspnet/signalr";
 import { Constant } from "./constant";
 
 function appendQueryParameter(url: string, name: string, value: string) {
-  var separator = url.indexOf('?') === -1 ? '?' : '&';
-  return `${url}${separator}${name}=${value}`
+  var separator = url.indexOf("?") === -1 ? "?" : "&";
+  return `${url}${separator}${name}=${value}`;
 }
 
 async function delay(milliseconds: number) {
-  return new Promise<void>(resolve => {
+  return new Promise<void>((resolve) => {
     setTimeout(resolve, milliseconds);
   });
 }
 
-function getConnections(count : number, url = Constant.Server.ChatUrl, usernameFactory? : (number) => string, accessTokenFactory? : () => string | Promise<string>){
-  let connections : HubConnection[] = new Array(count);
+function getConnections(
+  count: number,
+  url = Constant.Server.ChatUrl,
+  usernameFactory?: (number) => string,
+  accessTokenFactory?: () => string | Promise<string>
+) {
+  let connections: HubConnection[] = new Array(count);
   for (let i = 0; i < connections.length; i++) {
     let username: string;
     if (usernameFactory != null) {
@@ -25,8 +30,9 @@ function getConnections(count : number, url = Constant.Server.ChatUrl, usernameF
       username = `user${i}`;
     }
     connections[i] = new signalR.HubConnectionBuilder()
-      .withUrl(appendQueryParameter(url, 'username', username), {
-        accessTokenFactory: accessTokenFactory == null ? () => "" : accessTokenFactory
+      .withUrl(appendQueryParameter(url, "username", username), {
+        accessTokenFactory:
+          accessTokenFactory == null ? () => "" : accessTokenFactory,
       })
       .build();
   }
@@ -36,7 +42,7 @@ function getConnections(count : number, url = Constant.Server.ChatUrl, usernameF
 async function startConnections(connections: HubConnection[]) {
   let promise = new Array(connections.length);
   for (let i in connections) {
-    promise[i] = connections[i].start().catch(err => expect(err).toBeNull());
+    promise[i] = connections[i].start().catch((err) => expect(err).toBeNull());
   }
   await Promise.all(promise);
 }
@@ -52,18 +58,22 @@ async function stopConnections(connections: HubConnection[]) {
 async function promiseOrTimeout(promise: Promise<void>, timeout: number) {
   return Promise.race([
     promise,
-    new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeout))
-  ])
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Timeout")), timeout)
+    ),
+  ]);
 }
 
 function Deferred() {
   this.resolve = null;
   this.reject = null;
 
-  this.promise = new Promise(function (resolve, reject) {
-    this.resolve = resolve;
-    this.reject = reject;
-  }.bind(this));
+  this.promise = new Promise(
+    function (resolve, reject) {
+      this.resolve = resolve;
+      this.reject = reject;
+    }.bind(this)
+  );
   Object.freeze(this);
 }
 
@@ -103,4 +113,12 @@ class DeferMap {
   };
 }
 
-export { delay, getConnections, startConnections, stopConnections, promiseOrTimeout, Deferred, DeferMap };
+export {
+  delay,
+  getConnections,
+  startConnections,
+  stopConnections,
+  promiseOrTimeout,
+  Deferred,
+  DeferMap,
+};

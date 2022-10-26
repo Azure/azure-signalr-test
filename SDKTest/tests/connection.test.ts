@@ -1,17 +1,23 @@
-import { DeferMap, getConnections, promiseOrTimeout, startConnections, stopConnections } from "./utils";
+import {
+  DeferMap,
+  getConnections,
+  promiseOrTimeout,
+  startConnections,
+  stopConnections,
+} from "./utils";
 import { Constant } from "./constant";
 
-const testMessage = 'Test Message';
+const testMessage = "Test Message";
 
-test('connect to server', async () => {
+test("connect to server", async () => {
   const connections = getConnections(1);
   await startConnections(connections);
   await stopConnections(connections);
 });
 
-test('echo', async () => {
+test("echo", async () => {
   const connections = getConnections(1);
-  const connectionName = 'connection';
+  const connectionName = "connection";
 
   const echoCallback = jest.fn();
   connections[0].on(Constant.echo, echoCallback);
@@ -24,7 +30,7 @@ test('echo', async () => {
   await stopConnections(connections);
 });
 
-test('broadcast', async () => {
+test("broadcast", async () => {
   const deferMap = new DeferMap();
 
   let connections = getConnections(3);
@@ -35,11 +41,11 @@ test('broadcast', async () => {
 
   let promise = deferMap.waitForPromise(3);
   await connections[0].invoke(Constant.broadcast, "connection0", testMessage);
-  expect(await promise).toEqual(['connection0', testMessage]);
+  expect(await promise).toEqual(["connection0", testMessage]);
   await stopConnections(connections);
 });
 
-test('send others', async () => {
+test("send others", async () => {
   const deferMapList = [new DeferMap(), new DeferMap(), new DeferMap()];
 
   let connections = getConnections(3);
@@ -52,9 +58,11 @@ test('send others', async () => {
   let promise1 = deferMapList[1].waitForPromise(1);
   let promise2 = deferMapList[2].waitForPromise(1);
   await connections[0].invoke(Constant.sendOthers, "connection0", testMessage);
-  expect(await promise1).toEqual(['connection0', testMessage]);
-  expect(await promise2).toEqual(['connection0', testMessage]);
-  await promiseOrTimeout(promise0, Constant.awaitTimeout).catch(error => expect(error).not.toBeNull());
+  expect(await promise1).toEqual(["connection0", testMessage]);
+  expect(await promise2).toEqual(["connection0", testMessage]);
+  await promiseOrTimeout(promise0, Constant.awaitTimeout).catch((error) =>
+    expect(error).not.toBeNull()
+  );
+
   await stopConnections(connections);
 });
-

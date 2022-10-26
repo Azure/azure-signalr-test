@@ -1,5 +1,5 @@
 # build runtime image
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         wget \
@@ -17,7 +17,7 @@ RUN apt-get update -y \
     && apt-get install -y aspnetcore-runtime-2.1
 
 # Install Node.js
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get install -y nodejs \
     && apt-get install -y build-essential \
     && npm install -g npm
