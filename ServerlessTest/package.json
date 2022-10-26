@@ -2,7 +2,7 @@
   "name": "azure-signalr-test",
   "version": "0.1.0",
   "scripts": {
-    "test": "jest"
+    "test": "jest -w 1"
   },
   "jest": {
     "testEnvironment": "node",
@@ -24,6 +24,10 @@
       "jest-junit"
     ]
   },
+  "engines": {
+    "npm": ">=8.0.0 <9.0.0",
+    "node": ">=16.0.0 <17.0.0"
+  },
   "jest-junit": {
     "suiteName": "jest tests",
     "outputDirectory": ".",
@@ -39,7 +43,7 @@
     "jest": "^23.5.0",
     "jest-junit": "^5.2.0",
     "njwt": "^0.4.0",
-    "npm": "^6.14.14",
+    "npm": "^8.0.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "semver": "^5.5.1",
