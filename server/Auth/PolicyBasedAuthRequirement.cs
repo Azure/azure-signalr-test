@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace Microsoft.Azure.SignalR.Test.Server
+namespace Microsoft.Azure.SignalR.Test.Server;
+
+public class PolicyBasedAuthRequirement : IAuthorizationRequirement
 {
-    public class PolicyBasedAuthRequirement : IAuthorizationRequirement
+    public PolicyBasedAuthRequirement()
     {
-        public PolicyBasedAuthRequirement()
-        {
-        }
     }
 }
