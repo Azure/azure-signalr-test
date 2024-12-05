@@ -1,6 +1,5 @@
-﻿namespace Microsoft.Azure.SignalR.Test.Server
+﻿namespace Microsoft.Azure.SignalR.Test.Server;
+
+public class LongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongName : Chat
 {
-    public class LongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongNameChatLongName : Chat
-    {
-    }
 }

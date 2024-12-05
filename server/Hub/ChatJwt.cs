@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 
-namespace Microsoft.Azure.SignalR.Test.Server
+namespace Microsoft.Azure.SignalR.Test.Server;
+
+[Authorize(AuthenticationSchemes = "Bearer")]
+[Authorize(Roles = "Admin")]
+[Authorize(Policy = "ClaimBasedAuth")]
+[Authorize(Policy = "PolicyBasedAuth")]
+public class ChatJwt : Chat
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Policy = "ClaimBasedAuth")]
-    [Authorize(Policy = "PolicyBasedAuth")]
-    public class ChatJwt : Chat
-    {
-    }
 }

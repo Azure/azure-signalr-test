@@ -1,44 +1,44 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Microsoft.Azure.SignalR.Test.Server
+namespace Microsoft.Azure.SignalR.Test.Server;
+
+[Route("cookie")]
+public class CookieController : Controller
 {
-    [Route("cookie")]
-    public class CookieController : Controller
+    [HttpGet("login")]
+    public async Task<IActionResult> Login([FromQuery] string username, [FromQuery] string role)
     {
-        [HttpGet("login")]
-        public async Task<IActionResult> Login([FromQuery] string username, [FromQuery] string role)
+        if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(role))
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(role))
-            {
-                return BadRequest("Username and role is required.");
-            }
-
-            if (!IsExistingUser(username))
-            {
-                return Unauthorized();
-            }
-
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, username),
-                new Claim(ClaimTypes.Role, HttpContext.Request.Query["role"])
-            };
-
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity));
-            return Ok();
+            return BadRequest("Username and role is required.");
         }
 
-        private bool IsExistingUser(string username)
+        if (!IsExistingUser(username))
         {
-            return username.StartsWith("cookie");
+            return Unauthorized();
         }
+
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, username),
+            new Claim(ClaimTypes.Role, HttpContext.Request.Query["role"])
+        };
+
+        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+            new ClaimsPrincipal(claimsIdentity));
+        return Ok();
+    }
+
+    private bool IsExistingUser(string username)
+    {
+        return username.StartsWith("cookie");
     }
 }
