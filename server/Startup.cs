@@ -14,25 +14,18 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Microsoft.Azure.SignalR.Test.Server;
 
-public class Startup
+public class Startup(IConfiguration configuration)
 {
-    public IConfiguration Configuration { get; }
-
-    public Startup(IConfiguration configuration)
-    {
-        Configuration = configuration;
-    }
+    public IConfiguration Configuration { get; } = configuration;
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddAuthorization(option =>
-        {
-            option.AddPolicy("ClaimBasedAuth", policy =>
+        services.AddAuthorizationBuilder()
+            .AddPolicy("ClaimBasedAuth", policy =>
             {
                 policy.RequireClaim(ClaimTypes.NameIdentifier);
-            });
-            option.AddPolicy("PolicyBasedAuth", policy => policy.Requirements.Add(new PolicyBasedAuthRequirement()));
-        });
+            })
+            .AddPolicy("PolicyBasedAuth", policy => policy.Requirements.Add(new PolicyBasedAuthRequirement()));
 
         services.AddSingleton<IAuthorizationHandler, PolicyBasedAuthHandler>();
 
@@ -49,10 +42,7 @@ public class Startup
                 var tenantId = Environment.GetEnvironmentVariable("tenantId") ?? throw new ArgumentNullException();
                 option.Authority = $"https://login.microsoftonline.com/{tenantId}";
 
-                option.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateAudience = false,
-                };
+                option.TokenValidationParameters = new TokenValidationParameters();
             });
         }
         else
@@ -73,19 +63,19 @@ public class Startup
         services.AddSignalR()
             .AddAzureSignalR(options =>
             {
-                options.ConnectionCount = 2;
+                options.InitialHubServerConnectionCount = 2;
 
                 options.ClaimsProvider = context =>
                 {
                     if (context.Request.Query["username"].Count != 0)
                     {
-                        return new[]
-                        {
+                        return
+                        [
                             new Claim(ClaimTypes.NameIdentifier, context.Request.Query["username"])
-                        };
+                        ];
                     }
 
-                    return new Claim[] { };
+                    return [];
                 };
             });
         services.AddCors();
@@ -101,7 +91,7 @@ public class Startup
                 .AllowAnyHeader()
                 .AllowCredentials());
         app.UseFileServer();
-        app.UseAzureSignalR(routes =>
+        app.UseEndpoints(routes =>
         {
             routes.MapHub<Chat>("/chat");
             routes.MapHub<ChatJwt>("/chatjwt");
