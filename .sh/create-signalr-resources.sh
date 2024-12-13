@@ -1,31 +1,25 @@
-az cloud set --name $(cloud)
-
 set -e
 # Generate a unique suffix for the service name
-let randomNum=$RANDOM*$RANDOM
+let randomNum=$RANDOM
 
 # Generate a unique service and group name with the suffix
 defaultName=signalr-e2e-$(asrs_location)-$randomNum
 serverlessName=signalr-serverless-e2e-$(asrs_location)-$randomNum
 
-# random delay 0-29 sec
-sleep .$[ ( $RANDOM % 29 ) + 0 ]s
+# random delay 1-10 sec
+sleep .$((($RANDOM % 10) + 1))s
 
 # Create the Azure SignalR Service resource
 az signalr create \
   --name $defaultName \
   --resource-group $(asrs_resource_group) \
-  --sku Standard_S1\
-  --unit-count 2\
-  --service-mode Default \
+  --sku Standard_S1 --unit-count 2 --service-mode Default \
   --location $(asrs_location)
 
 az signalr create \
   --name $serverlessName \
   --resource-group $(asrs_resource_group) \
-  --sku Standard_S1\
-  --unit-count 2\
-  --service-mode Default \
+  --sku Standard_S1 --unit-count 2 --service-mode Default \
   --location $(asrs_location)
 
 defaultConnectionString=$(az signalr key list --name $defaultName \
