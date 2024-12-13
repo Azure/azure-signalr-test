@@ -1,5 +1,3 @@
-az cloud set --name $(cloud)
-
 set -e
 # Generate a unique suffix for the service name
 let randomNum=$RANDOM*$RANDOM
