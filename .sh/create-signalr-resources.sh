@@ -1,8 +1,6 @@
 set -e
 # Generate a unique suffix for the service name
 let randomNum=$RANDOM
-let location=$(asrs_location)
-let resourceGroup=$(asrs_resource_group)
 
 echo "asrs location: $location"
 echo "asrs resource group: $resourceGroup"
