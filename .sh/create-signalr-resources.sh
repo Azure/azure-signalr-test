@@ -2,6 +2,9 @@ set -e
 # Generate a unique suffix for the service name
 let randomNum=$RANDOM
 
+echo "asrs location: $asrs_location"
+echo "asrs resource group: $asrs_resource_group"
+
 # Generate a unique service and group name with the suffix
 defaultName=signalr-e2e-$asrs_location-$randomNum
 serverlessName=signalr-serverless-e2e-$asrs_location-$randomNum
