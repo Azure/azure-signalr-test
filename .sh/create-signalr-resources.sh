@@ -1,13 +1,15 @@
 set -e
 # Generate a unique suffix for the service name
 let randomNum=$RANDOM
+let location=$(asrs_location)
+let resourceGroup=$(asrs_resource_group)
 
-echo "asrs location: $asrs_location"
-echo "asrs resource group: $asrs_resource_group"
+echo "asrs location: $location"
+echo "asrs resource group: $resourceGroup"
 
 # Generate a unique service and group name with the suffix
-defaultName=signalr-e2e-$asrs_location-$randomNum
-serverlessName=signalr-serverless-e2e-$asrs_location-$randomNum
+defaultName=signalr-e2e-$location-$randomNum
+serverlessName=signalr-serverless-e2e-$location-$randomNum
 
 # random delay 1-10 sec
 sleep .$((($RANDOM % 10) + 1))s
@@ -15,21 +17,21 @@ sleep .$((($RANDOM % 10) + 1))s
 # Create the Azure SignalR Service resource
 az signalr create \
   --name $defaultName \
-  --resource-group $asrs_resource_group \
+  --resource-group $resourceGroup \
   --sku Standard_S1 --unit-count 2 --service-mode Default \
-  --location $asrs_location
+  --location $location
 
 az signalr create \
   --name $serverlessName \
-  --resource-group $asrs_resource_group \
+  --resource-group $resourceGroup \
   --sku Standard_S1 --unit-count 2 --service-mode Default \
-  --location $asrs_location
+  --location $location
 
 defaultConnectionString=$(az signalr key list --name $defaultName \
-  --resource-group $asrs_resource_group --query primaryConnectionString -o tsv)
+  --resource-group $resourceGroup --query primaryConnectionString -o tsv)
 
 serverlessConnectionString=$(az signalr key list --name $serverlessName \
-  --resource-group $asrs_resource_group --query primaryConnectionString -o tsv)
+  --resource-group $resourceGroup --query primaryConnectionString -o tsv)
 
 echo "##vso[task.setvariable variable=defaultname]$defaultName"
 echo "##vso[task.setvariable variable=serverlessname]$serverlessName"
