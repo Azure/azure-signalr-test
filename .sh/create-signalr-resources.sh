@@ -22,7 +22,7 @@ az signalr create \
 az signalr create \
   --name $serverlessName \
   --resource-group $resourceGroup \
-  --sku Standard_S1 --unit-count 2 --service-mode Default \
+  --sku Standard_S1 --unit-count 2 --service-mode Serverless \
   --location $location
 
 defaultConnectionString=$(az signalr key list --name $defaultName \
