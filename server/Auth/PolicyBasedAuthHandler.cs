@@ -2,18 +2,19 @@
 
 using Microsoft.AspNetCore.Authorization;
 
-namespace Microsoft.Azure.SignalR.Test.Server;
-
-public class PolicyBasedAuthHandler : AuthorizationHandler<PolicyBasedAuthRequirement>
+namespace Microsoft.Azure.SignalR.Test.Server
 {
-    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
-        PolicyBasedAuthRequirement requirement)
+    public class PolicyBasedAuthHandler : AuthorizationHandler<PolicyBasedAuthRequirement>
     {
-        if (context.User.IsInRole("Admin"))
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
+            PolicyBasedAuthRequirement requirement)
         {
-            context.Succeed(requirement);
-        }
+            if (context.User.IsInRole("Admin"))
+            {
+                context.Succeed(requirement);
+            }
 
-        return Task.CompletedTask;
+            return Task.CompletedTask;
+        }
     }
 }
