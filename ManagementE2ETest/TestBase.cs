@@ -21,7 +21,7 @@ namespace ManagementE2ETest
 
         public static IEnumerable<object[]> TestData => from serviceTransportType in _serviceTransportType
                                                         from count in Enumerable.Range(1, 4)
-                                                        select new object[] { serviceTransportType, count};
+                                                        select new object[] { serviceTransportType, count };
         protected static Task AddUserToGroupAsync(IServiceHubContext hubContext, IDictionary<string, List<string>> userGroupDict)
         {
             return Task.WhenAll(from usergroup in userGroupDict

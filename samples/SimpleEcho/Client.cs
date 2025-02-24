@@ -13,7 +13,8 @@ namespace SimpleEcho;
 public class Client
 {
     private const string message = "Hello!";
-    private readonly TaskCompletionSource<string> resp = new TaskCompletionSource<string>();
+
+    private readonly TaskCompletionSource<string> resp = new();
 
     public async Task StartAsync(CancellationToken cancellationToken = default)
     {
