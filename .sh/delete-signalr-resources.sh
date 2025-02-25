@@ -1,2 +1,2 @@
-az signalr delete -n $defaultname -g $resourceGroup
-az signalr delete -n $serverlessname -g $resourceGroup
+az signalr delete -n $signalrDefaultName -g $resourceGroup
+az signalr delete -n $signalrServerlessName -g $resourceGroup
