@@ -1,6 +1,4 @@
 set -e
-# Generate a unique suffix for the service name
-let randomNum=$RANDOM
 
 # Function to check SignalR status
 check_signalr_status() {
@@ -42,45 +40,50 @@ check_signalr_status() {
     done
 }
 
-if [[ -z "$resourceGroup" || -z "$location" ]]; then
-  echo "Error: Missing required parameters. resourceGroup and location must be set."
+if [[ -z "$resource_group" || -z "$location" ]]; then
+  echo "Error: Missing required parameters. resource_group and location must be set."
   exit 1
 fi
 
+random_num=$(shuf -i 10000-99999 -n 1)
+current_resource_group="${resource_group}-${random_num}"
+echo $current_resource_group
+
 echo "asrs location: $location"
-echo "asrs resource group: $resourceGroup"
+echo "asrs resource group: $current_resource_group"
 
 # Generate a unique service and group name with the suffix
-signalrDefaultName=signalr-e2e-$location-$randomNum
-signalrServerlessName=signalr-serverless-e2e-$location-$randomNum
+signalr_default_name=signalr-e2e-$location-$random_num
+signalr_serverless_name=signalr-serverless-e2e-$location-$random_num
 
 # random delay 1-10 sec
 sleep .$((($RANDOM % 10) + 1))s
 
+az group create --name $current_resource_group --location $location
+
 # Create the Azure SignalR Service resource
 az signalr create \
-  --name $signalrDefaultName \
-  --resource-group $resourceGroup \
+  --name $signalr_default_name \
+  --resource-group $current_resource_group \
   --sku Standard_S1 --unit-count 2 --service-mode Default \
   --location $location
 
 az signalr create \
-  --name $signalrServerlessName \
-  --resource-group $resourceGroup \
+  --name $signalr_serverless_name \
+  --resource-group $current_resource_group \
   --sku Standard_S1 --unit-count 2 --service-mode Serverless \
   --location $location
 
-check_signalr_status $resourceGroup $signalrDefaultName 600
-check_signalr_status $resourceGroup $signalrServerlessName 600
+check_signalr_status $current_resource_group $signalr_default_name 600
+check_signalr_status $current_resource_group $signalr_serverless_name 600
 
-signalrDefaultConnStr=$(az signalr key list --name $signalrDefaultName \
-  --resource-group $resourceGroup --query primaryConnectionString -o tsv)
+signalr_default_connstr=$(az signalr key list --name $signalr_default_name \
+  --resource-group $current_resource_group --query primaryConnectionString -o tsv)
 
-signalrServerlessConnStr=$(az signalr key list --name $signalrServerlessName \
-  --resource-group $resourceGroup --query primaryConnectionString -o tsv)
+signalr_serverless_connstr=$(az signalr key list --name $signalr_serverless_name \
+  --resource-group $current_resource_group --query primaryConnectionString -o tsv)
 
-echo "##vso[task.setvariable variable=signalrDefaultName]$signalrDefaultName"
-echo "##vso[task.setvariable variable=signalrDefaultConnStr]$signalrDefaultConnStr"
+echo "##vso[task.setvariable variable=signalr_default_connstr]$signalr_default_connstr"
+echo "##vso[task.setvariable variable=signalr_serverless_connstr]$signalr_serverless_connstr"
 
-echo "##vso[task.setvariable variable=signalrServerlessName]$signalrServerlessName"
-echo "##vso[task.setvariable variable=signalrServerlessConnStr]$signalrServerlessConnStr"
+echo "##vso[task.setvariable variable=current_resource_group]$current_resource_group"
