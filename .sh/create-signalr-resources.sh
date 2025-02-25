@@ -2,51 +2,51 @@ set -e
 
 # Function to check SignalR status
 check_signalr_status() {
-    local RESOURCE_GROUP="$1"
-    local SIGNALR_NAME="$2"
-    local TIMEOUT="$3"
-    local INTERVAL=1  # Check interval in seconds
+  local RESOURCE_GROUP="$1"
+  local SIGNALR_NAME="$2"
+  local TIMEOUT="$3"
+  local INTERVAL=1 # Check interval in seconds
 
-    # Validate environment variables
-    if [[ -z "$RESOURCE_GROUP" || -z "$SIGNALR_NAME" || -z "$TIMEOUT" ]]; then
-        echo "Error: Missing required parameters. RESOURCE_GROUP, SIGNALR_NAME, and TIMEOUT must be set."
-        return 1
+  # Validate environment variables
+  if [[ -z "$RESOURCE_GROUP" || -z "$SIGNALR_NAME" || -z "$TIMEOUT" ]]; then
+    echo "Error: Missing required parameters. RESOURCE_GROUP, SIGNALR_NAME, and TIMEOUT must be set."
+    return 1
+  fi
+
+  # Start time
+  local START_TIME=$(date +%s)
+
+  while true; do
+    # Get the provisioning state
+    local STATUS=$(az signalr show --name "$SIGNALR_NAME" --resource-group "$RESOURCE_GROUP" --query "provisioningState" --output tsv)
+    echo "Current status: $STATUS"
+
+    # Check if the status is 'Succeeded'
+    if [[ "$STATUS" == "Succeeded" ]]; then
+      echo "SignalR resource is ready!"
+      return 0
     fi
 
-    # Start time
-    local START_TIME=$(date +%s)
+    # Check timeout
+    local CURRENT_TIME=$(date +%s)
+    local ELAPSED_TIME=$((CURRENT_TIME - START_TIME))
+    if [[ $ELAPSED_TIME -ge $TIMEOUT ]]; then
+      echo "Timeout reached! SignalR resource did not reach 'Succeeded' state within $TIMEOUT seconds."
+      return 1
+    fi
 
-    while true; do
-        # Get the provisioning state
-        local STATUS=$(az signalr show --name "$SIGNALR_NAME" --resource-group "$RESOURCE_GROUP" --query "provisioningState" --output tsv)
-        echo "Current status: $STATUS"
-
-        # Check if the status is 'Succeeded'
-        if [[ "$STATUS" == "Succeeded" ]]; then
-            echo "SignalR resource is ready!"
-            return 0
-        fi
-
-        # Check timeout
-        local CURRENT_TIME=$(date +%s)
-        local ELAPSED_TIME=$((CURRENT_TIME - START_TIME))
-        if [[ $ELAPSED_TIME -ge $TIMEOUT ]]; then
-            echo "Timeout reached! SignalR resource did not reach 'Succeeded' state within $TIMEOUT seconds."
-            return 1
-        fi
-
-        # Wait for the next check
-        sleep $INTERVAL
-    done
+    # Wait for the next check
+    sleep $INTERVAL
+  done
 }
 
-if [[ -z "$resource_group" || -z "$location" ]]; then
+if [[ -z "$location" ]]; then
   echo "Error: Missing required parameters. resource_group and location must be set."
   exit 1
 fi
 
 random_num=$(shuf -i 10000-99999 -n 1)
-current_resource_group="${resource_group}-${random_num}"
+current_resource_group="signalr-nightly-e2e-${location}-${random_num}"
 echo $current_resource_group
 
 echo "asrs location: $location"
@@ -87,3 +87,8 @@ echo "##vso[task.setvariable variable=signalr_default_connstr]$signalr_default_c
 echo "##vso[task.setvariable variable=signalr_serverless_connstr]$signalr_serverless_connstr"
 
 echo "##vso[task.setvariable variable=current_resource_group]$current_resource_group"
+
+# secondary regions
+# australiasoutheast,canadaeast,centralus,germanywestcentral,italynorth,japanwest,jioindiawest,polandcentral,qatarcentral,southeastasia,southcentralus,switzerlandwest,uksouth,westeurope,westus,westus3
+# primary regions
+# australiaeast,brazilsouth,canadacentral,centralindia,eastasia,eastus2,francecentral,japaneast,koreacentral,northcentralus,northeurope,norwayeast,southafricanorth,swedencentral,switzerlandnorth,uaenorth,ukwest
