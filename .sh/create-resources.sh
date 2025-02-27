@@ -38,6 +38,8 @@ check_signalr_status() {
     # Wait for the next check
     sleep $INTERVAL
   done
+
+  echo ""
 }
 
 # Function to check Web PubSub status
@@ -78,6 +80,8 @@ check_webpubsub_status() {
     # Wait for the next check
     sleep $INTERVAL
   done
+
+  echo ""
 }
 
 if [[ -z "$location" ]]; then
@@ -114,6 +118,7 @@ time az signalr create \
   --resource-group $current_resource_group \
   --sku Standard_S1 --unit-count 2 --service-mode Default \
   --location $location > /dev/null
+echo ""
 
 echo "Creating SignalR Serverless resource"
 time az signalr create \
@@ -121,6 +126,7 @@ time az signalr create \
   --resource-group $current_resource_group \
   --sku Standard_S1 --unit-count 2 --service-mode Serverless \
   --location $location > /dev/null
+echo ""
 
 echo "Creating WebPubSub resource"
 time az webpubsub create \
@@ -128,6 +134,7 @@ time az webpubsub create \
   --resource-group $current_resource_group \
   --sku Standard_S1 --unit-count 2 \
   --location $location > /dev/null
+echo ""
 
 check_signalr_status $current_resource_group $signalr_default_name 600
 check_signalr_status $current_resource_group $signalr_serverless_name 600
