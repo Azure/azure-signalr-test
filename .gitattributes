@@ -1,4 +1,0 @@
-* text=auto
-*.sln text eol=crlf
-*.sh text eol=lf
-dockerfile text eol=lf
