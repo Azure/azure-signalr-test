@@ -100,26 +100,34 @@ webpubsub_default_name=webpubsub-e2e-$location-$random_num
 # random delay 1-10 sec
 sleep .$((($RANDOM % 10) + 1))s
 
-az group create --name $current_resource_group --location $location
+if [[ "$location" == "switzerlandwest" ]]; then
+  echo "We are not able to create Resource Group in Switzerland West, so we will create in West Europe";
+  az group create --name $current_resource_group --location westeurope
+else
+  az group create --name $current_resource_group --location $location
+fi
 
 # Create the Azure SignalR Service resource
-az signalr create \
+echo "Creating SignalR resource"
+time az signalr create \
   --name $signalr_default_name \
   --resource-group $current_resource_group \
   --sku Standard_S1 --unit-count 2 --service-mode Default \
-  --location $location
+  --location $location > /dev/null
 
-az signalr create \
+echo "Creating SignalR Serverless resource"
+time az signalr create \
   --name $signalr_serverless_name \
   --resource-group $current_resource_group \
   --sku Standard_S1 --unit-count 2 --service-mode Serverless \
-  --location $location
+  --location $location > /dev/null
 
-az webpubsub create \
+echo "Creating WebPubSub resource"
+time az webpubsub create \
   --name $webpubsub_default_name \
   --resource-group $current_resource_group \
   --sku Standard_S1 --unit-count 2 \
-  --location $location
+  --location $location > /dev/null
 
 check_signalr_status $current_resource_group $signalr_default_name 600
 check_signalr_status $current_resource_group $signalr_serverless_name 600
@@ -143,5 +151,6 @@ echo "##vso[task.setvariable variable=current_resource_group]$current_resource_g
 
 # secondary regions
 # australiasoutheast,canadaeast,centralus,germanywestcentral,italynorth,japanwest,jioindiawest,polandcentral,qatarcentral,southeastasia,southcentralus,switzerlandwest,uksouth,westeurope,westus,westus3
+
 # primary regions
 # australiaeast,brazilsouth,canadacentral,centralindia,eastasia,eastus2,francecentral,japaneast,koreacentral,northcentralus,northeurope,norwayeast,southafricanorth,swedencentral,switzerlandnorth,uaenorth,ukwest
