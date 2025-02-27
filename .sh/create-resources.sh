@@ -134,8 +134,6 @@ signalr_serverless_connstr=$(az signalr key list --name $signalr_serverless_name
 webpubsub_connstr=$(az webpubsub key list --name $webpubsub_default_name \
   --resource-group $current_resource_group --query primaryConnectionString -o tsv)
 
-
-
 echo "##vso[task.setvariable variable=signalr_default_connstr]$signalr_default_connstr"
 echo "##vso[task.setvariable variable=signalr_serverless_connstr]$signalr_serverless_connstr"
 
