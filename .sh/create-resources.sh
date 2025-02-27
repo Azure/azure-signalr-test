@@ -122,7 +122,7 @@ az webpubsub create \
   --location $location
 
 check_signalr_status $current_resource_group $signalr_default_name 600
-check_signalr_statusoc $current_resource_group $signalr_serverless_name 600
+check_signalr_status $current_resource_group $signalr_serverless_name 600
 check_webpubsub_status $current_resource_group $webpubsub_default_name 600
 
 signalr_default_connstr=$(az signalr key list --name $signalr_default_name \
