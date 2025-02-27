@@ -13,6 +13,8 @@ check_signalr_status() {
     return 1
   fi
 
+  echo "Creating SignalR resource $SIGNALR_NAME..."
+
   # Start time
   local START_TIME=$(date +%s)
 
@@ -23,7 +25,7 @@ check_signalr_status() {
 
     # Check if the status is 'Succeeded'
     if [[ "$STATUS" == "Succeeded" ]]; then
-      echo "SignalR resource $SIGNALR_NAME is ready!"
+      echo "SignalR resource $SIGNALR_NAME is ready!\n"
       return 0
     fi
 
@@ -38,8 +40,6 @@ check_signalr_status() {
     # Wait for the next check
     sleep $INTERVAL
   done
-
-  echo ""
 }
 
 # Function to check Web PubSub status
@@ -55,6 +55,8 @@ check_webpubsub_status() {
     return 1
   fi
 
+  echo "Creating Web PubSub resource $WEBPUBSUB_NAME..."
+
   # Start time
   local START_TIME=$(date +%s)
 
@@ -65,7 +67,7 @@ check_webpubsub_status() {
 
     # Check if the status is 'Succeeded'
     if [[ "$STATUS" == "Succeeded" ]]; then
-      echo "Web PubSub resource $WEBPUBSUB_NAME is ready!"
+      echo "Web PubSub resource $WEBPUBSUB_NAME is ready!\n"
       return 0
     fi
 
@@ -80,8 +82,6 @@ check_webpubsub_status() {
     # Wait for the next check
     sleep $INTERVAL
   done
-
-  echo ""
 }
 
 if [[ -z "$location" ]]; then
@@ -104,6 +104,8 @@ webpubsub_default_name=webpubsub-e2e-$location-$random_num
 # random delay 1-10 sec
 sleep .$((($RANDOM % 10) + 1))s
 
+az upgrade --yes
+
 if [[ "$location" == "switzerlandwest" ]]; then
   echo "We are not able to create Resource Group in Switzerland West, so we will create in West Europe";
   az group create --name $current_resource_group --location westeurope
@@ -112,7 +114,6 @@ else
 fi
 
 # Create the Azure SignalR Service resource
-echo "Creating SignalR resource"
 time az signalr create \
   --name $signalr_default_name \
   --resource-group $current_resource_group \
@@ -120,7 +121,6 @@ time az signalr create \
   --location $location > /dev/null
 echo ""
 
-echo "Creating SignalR Serverless resource"
 time az signalr create \
   --name $signalr_serverless_name \
   --resource-group $current_resource_group \
@@ -128,7 +128,6 @@ time az signalr create \
   --location $location > /dev/null
 echo ""
 
-echo "Creating WebPubSub resource"
 time az webpubsub create \
   --name $webpubsub_default_name \
   --resource-group $current_resource_group \
