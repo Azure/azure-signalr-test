@@ -23,7 +23,7 @@ check_signalr_status() {
 
     # Check if the status is 'Succeeded'
     if [[ "$STATUS" == "Succeeded" ]]; then
-      echo "SignalR resource is ready!"
+      echo "SignalR resource $SIGNALR_NAME is ready!"
       return 0
     fi
 
@@ -65,7 +65,7 @@ check_webpubsub_status() {
 
     # Check if the status is 'Succeeded'
     if [[ "$STATUS" == "Succeeded" ]]; then
-      echo "Web PubSub resource is ready!"
+      echo "Web PubSub resource $WEBPUBSUB_NAME is ready!"
       return 0
     fi
 
