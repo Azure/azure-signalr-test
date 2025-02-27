@@ -117,7 +117,7 @@ az signalr create \
 
 az webpubsub create \
   --name $webpubsub_default_name \
-  --resource-group $current_resource_group 
+  --resource-group $current_resource_group \
   --sku Standard_S1 --unit-count 2 \
   --location $location
 
