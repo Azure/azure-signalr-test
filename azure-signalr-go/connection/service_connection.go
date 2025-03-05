@@ -1,6 +1,9 @@
 package connection
 
-import "azure.signalr.com/azure-signalr-go/protocol"
+import (
+	"azure.signalr.com/azure-signalr-go/endpoint"
+	"azure.signalr.com/azure-signalr-go/protocol"
+)
 
 type ServiceMessage = protocol.ServiceMessage
 
@@ -16,6 +19,8 @@ type ServiceConnection interface {
 }
 
 type serviceConnection struct {
+	hubEndpoint endpoint.HubServiceEndpoint
+
 	serverId     string
 	connectionId string
 	status       ServiceConnectionStatus
@@ -44,13 +49,20 @@ func (s *serviceConnection) Start() {
 func (s *serviceConnection) Stop() {
 }
 
+func (s *serviceConnection) connect() {
+	uri := s.hubEndpoint.GetServerEndpoint()
+
+	token := s.hubEndpoint.GenerateServerToken()
+}
+
 // WriteMessage implements ServiceConnection.
 func (s *serviceConnection) WriteMessage(message ServiceMessage) error {
 	return nil
 }
 
-func NewServiceConnection() ServiceConnection {
+func NewServiceConnection(hubEndpoint endpoint.HubServiceEndpoint) ServiceConnection {
 	return &serviceConnection{
+		hubEndpoint:  hubEndpoint,
 		serverId:     "foo",
 		connectionId: "",
 		status:       Init,
