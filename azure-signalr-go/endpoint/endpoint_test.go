@@ -14,7 +14,7 @@ func TestGenerateServerToken(t *testing.T) {
 
 	se := NewServiceEndpoint(endpoint, accessKey)
 
-	tokenString, err := se.GenerateServerToken()
+	tokenString, err := se.GenerateServerToken("localhost")
 	assert.NoError(t, err)
 	assert.NotEmpty(t, tokenString)
 
