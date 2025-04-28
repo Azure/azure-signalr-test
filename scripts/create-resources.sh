@@ -95,7 +95,6 @@ echo $current_resource_group
 
 echo "asrs location: $location"
 echo "asrs resource group: $current_resource_group"
-echo "app tenant id: $app_tenant_id"
 echo "app client id: $app_client_id"
 
 # Generate a unique service and group name with the suffix
