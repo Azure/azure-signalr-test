@@ -95,6 +95,8 @@ echo $current_resource_group
 
 echo "asrs location: $location"
 echo "asrs resource group: $current_resource_group"
+echo "app tenant id: $app_tenant_id"
+echo "app client id: $app_client_id"
 
 # Generate a unique service and group name with the suffix
 signalr_default_name=signalr-e2e-$location-$random_num
@@ -112,6 +114,13 @@ if [[ "$location" == "switzerlandwest" ]]; then
 else
   az group create --name $current_resource_group --location $location
 fi
+
+az role assignment create --assignee $app_client_id --role "SignalR App Server" --resource-group $current_resource_group
+az role assignment create --assignee $app_client_id --role "SignalR Service Owner" --resource-group $current_resource_group
+az role assignment create --assignee $app_client_id --role "Web PubSub Service Owner" --resource-group $current_resource_group
+
+az keyvault secret download --vault-name signalrcloudtestkv --name azure-signalr-service-nightly-test --encoding base64 --file cert.pfx
+echo "cert.pfx downloaded"
 
 # Create the Azure SignalR Service resource
 time az signalr create \
