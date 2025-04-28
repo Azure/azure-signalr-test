@@ -114,9 +114,13 @@ else
   az group create --name $current_resource_group --location $location
 fi
 
-az role assignment create --assignee $app_client_id --role "SignalR App Server" --resource-group $current_resource_group
-az role assignment create --assignee $app_client_id --role "SignalR Service Owner" --resource-group $current_resource_group
-az role assignment create --assignee $app_client_id --role "Web PubSub Service Owner" --resource-group $current_resource_group
+subscription_id=$(az account show --query id -o tsv)
+scope="/subscriptions/$subscription_id/resourceGroups/$current_resource_group"
+echo "scope: $scope"
+
+az role assignment create --assignee $app_client_id --role "SignalR App Server" --scope $scope
+az role assignment create --assignee $app_client_id --role "SignalR Service Owner" --scope $scope
+az role assignment create --assignee $app_client_id --role "Web PubSub Service Owner" --scope $scope
 
 az keyvault secret download --vault-name signalrcloudtestkv --name azure-signalr-service-nightly-test --encoding base64 --file cert.pfx
 echo "cert.pfx downloaded"
