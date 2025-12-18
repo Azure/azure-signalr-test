@@ -3,6 +3,7 @@
 using Azure.Core;
 using Azure.Identity;
 
+// A program
 internal class Program
 {
     private static async Task Main(string[] args)
